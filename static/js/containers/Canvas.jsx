@@ -7,7 +7,7 @@ import { canvasActions } from '../actions';
 class CanvasContainer extends Component {
     render() {
         return (
-            <svg>
+            <svg width="100%" height="100%">
                 <Canvas />
             </svg>
         )

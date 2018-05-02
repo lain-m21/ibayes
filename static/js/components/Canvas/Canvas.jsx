@@ -3,49 +3,42 @@ import { connect } from 'react-redux';
 
 import Node from './Node';
 import Edge from './Edge';
-// import Plate from './Plate';
+import Plate from './Plate';
+import BackGround from './BackGround'
 
 
 export default class Canvas extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            graph: {nodes: {}, edges: {}, plates: {}},
-            actions: {nodes: {}, edges: {}, plates: {}, canvas: {}},
-            selectedRegion: {topLeft: {}, bottomRight: {}},
-            style: {}
-        };
-    }
-
     renderGraph = () => {
         const nodesDOM = [];
         const edgesDOM = [];
         const platesDOM = [];
         
-        const nodes = {...this.state.graph.nodes}
+        const nodes = {...this.props.graph.nodes}
         for (const key in nodes) {
-            nodesDOM.push(<Node {...nodes[key]} actions={...this.state.actions.nodes} />);
+            nodesDOM.push(<Node {...nodes[key]} />);
         }
-        const edges = {...this.state.graph.edges}
+        const edges = {...this.props.graph.edges}
         for (const key in edges) {
-            edgesDOM.push(<Edge {...edges[key]} actions={...this.state.actions.edges} />);
+            edgesDOM.push(<Edge {...edges[key]} />);
         }
-        const plates = {...this.state.graph.plates}
+        const plates = {...this.props.graph.plates}
         for (const key in plates) {
-            platesDOM.push(<Plate {...plates[key]} actions={...this.state.actions.plates} />);
+            platesDOM.push(<Plate {...plates[key]} />);
         }
-
         return {nodes: nodesDOM, edges: edgesDOM, plates: platesDOM};
     }
 
     render() {
-        const { nodes, edges, plates} = this.renderGraph();
+        const { nodes, edges, plates } = this.renderGraph();
         return (
-            <g className="canvas">
-                {nodes}
-                {edges}
-                {plates}
-            </g>
+            <svg>
+                <BackGround />
+                <g className="graph">
+                    {nodes}
+                    {edges}
+                    {plates}
+                </g>
+            </svg>
         )
 
     }
