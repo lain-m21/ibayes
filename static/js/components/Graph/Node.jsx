@@ -14,6 +14,7 @@ class Node extends Component {
 
     render() {
         const node = {};
+        const { connectDragSource, isDragging } = this.props;
         return (
             <g>
                 {node}

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import { graphActions } from '../../actions';
 
@@ -25,3 +27,5 @@ class Graph extends Component {
 
     }
 }
+
+export default DragDropContext(HTML5Backend)(Graph)
