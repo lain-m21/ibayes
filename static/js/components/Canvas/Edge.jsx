@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class Edge extends Component {
+export default class Edge extends Component {
     constructor(props) {
         super(props);
         this.state = {

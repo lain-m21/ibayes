@@ -4,22 +4,23 @@ import rootSaga from './middleware'
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
+import masterReducers from './reducers';
 
-import Canvas from './components'
+import CanvasContainer from './containers'
 
-const sagaMiddleware = createSagaMiddleware();
+// const sagaMiddleware = createSagaMiddleware();
 
-let store = createStore(
-    reducers,
-    applyMiddleware(sagaMiddleware)
+let storeCanvas = createStore(
+    masterReducers.canvas,
+    // applyMiddleware(sagaMiddleware)
 );
-sagaMiddleware.run(rootSaga);
+// sagaMiddleware.run(rootSaga);
+
 class App extends Component {
     render() {
         return (
-            <Provider store={store}>
-                {Canvas}
+            <Provider store={storeCanvas}>
+                {CanvasContainer}
             </Provider>
         );
     }

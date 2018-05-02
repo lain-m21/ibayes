@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {Node, Edge, Plate} from '../Graph';
+import Node from './Node';
+import Edge from './Edge';
+// import Plate from './Plate';
 
 
-class Canvas extends Component {
+export default class Canvas extends Component {
     constructor(props) {
         super(props);
         this.state = {

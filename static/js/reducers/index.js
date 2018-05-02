@@ -1,10 +1,7 @@
-import {combineReducers} from 'redux';
-import graphReducer from './graph';
-import canvasReducer from './canvas';
+import canvasReducers from './Canvas';
 
-const reducers = combineReducers({
-    graph: graphReducer,
-    canvas: canvasReducer
-})
+const masterReducers = {
+    canvas: canvasReducers
+};
 
-export default reducers
+export default masterReducers;

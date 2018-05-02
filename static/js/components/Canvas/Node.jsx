@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import nodeTypes from './NodeTypes';
 
 
-class Node extends Component {
+export default class Node extends Component {
     render() {
         const style = this.props.style;
         const node = nodeTypes[this.props.type];
