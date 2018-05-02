@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import { nodeActions } from '../../actions';
+import nodeTypes from './NodeTypes';
 
 
 class Node extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: 0
-        }
-    }
-
     render() {
-        const node = {};
-        const { connectDragSource, isDragging } = this.props;
+        const style = this.props.style;
+        const node = nodeTypes[this.props.type];
         return (
-            <g>
+            <g {...this.props.position} id={this.props.id} className="node">
                 {node}
             </g>
         )

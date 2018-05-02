@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import { edgeActions } from '../../actions';
 
 
 class Edge extends Component {
