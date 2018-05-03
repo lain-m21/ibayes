@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import configs from './configs';
+import { backgroundConfigs } from './configs';
 
-const { background, marker, pattern, filter } = configs.background;
+const { background, marker, pattern, filter } = backgroundConfigs;
 
 export default class BackGround extends Component {
     render() {

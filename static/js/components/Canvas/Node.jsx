@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import nodeTypes from './NodeTypes';
+import { nodeConfigs } from './configs';
 
 
 export default class Node extends Component {
     render() {
-        const style = this.props.style;
-        const node = nodeTypes[this.props.type];
+        if (this.props.selected) {
+            const node = nodeConfigs[this.props.type]['selected'];
+        } else {
+            const node = nodeConfigs[this.props.type]['normal'];
+        }
+        const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (
-            <g {...this.props.position} id={this.props.id} className="node">
+            <g transform={translate} id={this.props.id} className="node" {...this.props.nodeActions}>
                 {node}
             </g>
         )

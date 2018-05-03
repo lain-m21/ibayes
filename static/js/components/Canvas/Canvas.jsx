@@ -15,15 +15,15 @@ export default class Canvas extends Component {
         
         const nodes = {...this.props.graph.nodes}
         for (const key in nodes) {
-            nodesDOM.push(<Node {...nodes[key]} />);
+            nodesDOM.push(<Node {...nodes[key]} nodeActions={this.props.nodeActions} />);
         }
         const edges = {...this.props.graph.edges}
         for (const key in edges) {
-            edgesDOM.push(<Edge {...edges[key]} />);
+            edgesDOM.push(<Edge {...edges[key]} edgeActions={this.props.edgeActions} />);
         }
         const plates = {...this.props.graph.plates}
         for (const key in plates) {
-            platesDOM.push(<Plate {...plates[key]} />);
+            platesDOM.push(<Plate {...plates[key]} plateActions={this.props.plateActions} />);
         }
         return {nodes: nodesDOM, edges: edgesDOM, plates: platesDOM};
     }
@@ -31,14 +31,14 @@ export default class Canvas extends Component {
     render() {
         const { nodes, edges, plates } = this.renderGraph();
         return (
-            <svg>
+            <g className="canvas" {...this.props.canvasActions}>
                 <BackGround />
                 <g className="graph">
                     {nodes}
                     {edges}
                     {plates}
                 </g>
-            </svg>
+            </g>
         )
 
     }

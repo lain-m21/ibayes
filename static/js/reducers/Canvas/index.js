@@ -6,7 +6,7 @@ import edgeReducer from './edge'
 import plateReducer from './plate'
 import selectReducer from './select'
 
-const canvasReducers = combineReducers({
+const CanvasReducers = combineReducers({
     canvas: canvasReducer,
     node: nodeReducer,
     edge: edgeReducer,
@@ -14,4 +14,4 @@ const canvasReducers = combineReducers({
     select: selectReducer
 });
 
-export default canvasReducers;
+export default CanvasReducers;

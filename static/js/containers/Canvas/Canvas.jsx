@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Canvas from '../components';
+import { Canvas } from '../components';
 import { canvasActions } from '../actions';
 
 class CanvasContainer extends Component {

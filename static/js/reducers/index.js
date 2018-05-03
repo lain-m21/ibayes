@@ -1,7 +1,3 @@
-import canvasReducers from './Canvas';
+import CanvasReducers from './Canvas';
 
-const masterReducers = {
-    canvas: canvasReducers
-};
-
-export default masterReducers;
+export { CanvasReducers };
