@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Canvas } from '../components';
-import { canvasActions } from '../actions';
+import { canvasMasterActions } from '../actions';
 
 class CanvasContainer extends Component {
     render() {
@@ -16,15 +16,21 @@ class CanvasContainer extends Component {
 
 const mapStateToProps = state => {
     return {
-        graph: state.graph,
+        nodes: state.nodes,
+        edges: state.edges,
+        plates: state.plates,
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        edgeOnMouseDown: (payload, meta) => {
-            return dispatch(canvasActions.edge.onMouseDown(payload, meta));
-        },
+        nodeActions: {
+            onMouseDown: (payload, meta) => {
+                return dispatch((payload, meta) => {
+                    return {type: 'NODE_ON_MOUSE_DOWN', payload: payload, meta: meta}
+                })
+            }
+        }
     };
 }
 

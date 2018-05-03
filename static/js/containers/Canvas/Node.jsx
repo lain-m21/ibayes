@@ -20,9 +20,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        edgeOnMouseDown: (payload, meta) => {
-            return dispatch(nodeActions.onMouseDown(payload, meta));
-        },
+        actions: {
+            onMouseDown: (payload, meta) => {
+                return dispatch(nodeActions.onMouseDown(payload, meta))
+            }
+        }
     };
 }
 

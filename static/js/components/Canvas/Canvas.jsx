@@ -13,15 +13,15 @@ export default class Canvas extends Component {
         const edgesDOM = [];
         const platesDOM = [];
         
-        const nodes = {...this.props.graph.nodes}
+        const nodes = {...this.props.nodes}
         for (const key in nodes) {
             nodesDOM.push(<Node {...nodes[key]} nodeActions={this.props.nodeActions} />);
         }
-        const edges = {...this.props.graph.edges}
+        const edges = {...this.props.edges}
         for (const key in edges) {
             edgesDOM.push(<Edge {...edges[key]} edgeActions={this.props.edgeActions} />);
         }
-        const plates = {...this.props.graph.plates}
+        const plates = {...this.props.plates}
         for (const key in plates) {
             platesDOM.push(<Plate {...plates[key]} plateActions={this.props.plateActions} />);
         }
