@@ -4,20 +4,6 @@ import { plateConfigs } from './configs';
 
 
 export default class Plate extends Component {
-    getPath = line()
-        .x( (d) => { return d[0] } )
-        .y( (d) => { return d[1] } );
-    
-    getPathDOM = (path) => {
-        if (this.props.selected) {
-            const plateEdgeStyle = plateConfigs.edge['selected'];
-        } else {
-            const plateEdgeStyle = plateConfigs.edge['normal']
-        }
-        return (
-            <path d={path} {...this.props.plateActions.edge} {...plateEdgeStyle} />
-        )
-    }
     getCornerDOM = (point, cursor) => {
         const plateCornerStyle = plateConfigs.corner;
         return (
@@ -25,24 +11,29 @@ export default class Plate extends Component {
         )
     }
     getPlate = () => {
-        const topLeft = this.props.positionTopLeft;
+        const topLeft = [this.props.x, this.props.y];
         const topRight = [topLeft[0] + this.props.width, topLeft[1]];
         const bottomLeft = [topLeft[0], topLeft[1] + this.props.height];
         const bottomRight = [topLeft[0] + this.props.width, topLeft[1] + this.props.height];
+        
+        const cornerPoints = `${topLeft[0]},${topLeft[1]}`
+        cornerPoints += ` ${topRight[0]},${topRight[1]}`
+        cornerPoints += ` ${bottomRight[0]},${bottomRight[1]}`
+        cornerPoints += ` ${bottomLeft[0]},${bottomLeft[1]}`
+        
+        if (this.props.selected) {
+            const plateEdgeStyle = plateConfigs.edge['selected'];
+        } else {
+            const plateEdgeStyle = plateConfigs.edge['normal']
+        }
 
-        const leftPath = this.getPath([topLeft, bottomLeft]);
-        const rightPath = this.getPath([topRight, bottomRight]);
-        const topPath = this.getPath([topLeft, topRight]);
-        const bottomPath = this.getPath([bottomLeft, bottomLeft]);
+        const border = <polygon points={cornerPoints} {...plateEdgeStyle} {...this.props.plateActions.edge}/>
 
         const plate = [
-            this.getPathDOM(leftPath),
-            this.getPathDOM(rightPath),
-            this.getPathDOM(topPath),
-            this.getPathDOM(bottomPath)
+            border
         ];
         
-        if (this.props.fixed) {
+        if (this.props.embodied) {
             plate.push(this.getCornerDOM(topLeft, 'nw-resize'));
             plate.push(this.getCornerDOM(topRight, 'ne-resize'));
             plate.push(this.getCornerDOM(bottomLeft, 'sw-resize'));
@@ -54,9 +45,9 @@ export default class Plate extends Component {
 
     render() {
         const plate = this.getPlate();
-        const translate = `translate(${this.props.positionTopLeft[0]}, ${this.props.positionTopLeft[1]})`
+        const translate = `translate(${this.props.x}, ${this.props.y})`
         return (
-            <g transform={this.props.positionTopLeft} id={this.props.id} className="plate">
+            <g transform={translate} id={this.props.id} className="plate">
                 {plate}
             </g>
         )

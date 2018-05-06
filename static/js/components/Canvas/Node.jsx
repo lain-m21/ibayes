@@ -21,25 +21,30 @@ export default class Node extends Component {
     handleMouseDown = (e) => {
         if (e.shiftKey) {
             return null;
-        } else {
-            document.addEventListener('mousemove', this.handleMouseMove);
-            const payload = {originX: e.pageX, originY: e.pageY};
-            this.props.onMouseDown(payload, this.meta);
         }
-    }
-    handleMouseUp = (e) => {
-        document.removeEventListener('mousemove', this.handleMouseMove);
-    }
-    handleMouseMove = (e) => {
-        const xDiff = this.props.originX - e.pageX;
-        const yDiff = this.props.originY - e.pageY;
+        document.addEventListener('mousemove', this.handleMouseMove);
         const payload = {
             originX: e.pageX, 
             originY: e.pageY,
-            x: this.props.x - xDiff,
-            y: this.props.y - yDiff
         };
-        this.props.onMouseMove(payload, this.meta);
+        this.props.onMouseDown(payload, this.meta);
+    }
+    handleMouseUp = (e) => {
+        if (e.shiftKey) {
+            return null;
+        }
+        document.removeEventListener('mousemove', this.handleDrag);
+    }
+    handleDrag = (e) => {
+        const xDiff = e.pageX - this.props.x;
+        const yDiff = e.pageY - this.props.y;
+        const payload = {
+            originX: e.pageX, 
+            originY: e.pageY,
+            xDiff: xDiff,
+            yDiff: yDiff
+        };
+        this.props.onDrag(payload, this.meta);
     }
     handleMouseOver = (e) => {
         this.props.onMouseOver({}, this.meta);
@@ -49,11 +54,7 @@ export default class Node extends Component {
     }
 
     render() {
-        if (this.props.selected) {
-            const node = nodeConfigs[this.props.type]['selected'];
-        } else {
-            const node = nodeConfigs[this.props.type]['normal'];
-        }
+        const node = nodeConfigs[this.props.type][this.props.state];
         const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (
             <g transform={translate} id={this.props.id} className="node"

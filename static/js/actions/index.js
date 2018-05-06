@@ -1,3 +1,3 @@
-import canvasMasterActions from './Canvas';
+import canvasActionFactory from './canvas';
 
-export { canvasMasterActions } ;
+export { canvasActionFactory };

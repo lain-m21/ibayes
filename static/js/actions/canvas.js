@@ -1,10 +1,7 @@
-import * as canvasActions from './canvas';
-import * as nodeActions from './node';
-import * as edgeActions from './edge';
-import * as plateActions from './plate';
-import * as selectActions from './select';
-
-function actionFactory(dispatch, componentType) {
+function canvasActionFactory(dispatch, componentType='CANVAS') {
+    // componentType is either of CANVAS, NODE, EDGE, PLATE, or SELECT
+    // TODO: more sophisticated/complicated composited actions to be defined
+    
     const actions = {
         onMouseDown: dispatch((payload, meta) => { 
             return {
@@ -56,14 +53,7 @@ function actionFactory(dispatch, componentType) {
             } 
         })
     }
+    return actions;
 }
 
-const canvasMasterActions = {
-    canvas: canvasActions,
-    node: nodeActions,
-    edge: edgeActions,
-    plate: plateActions,
-    select: selectActions
-}
-
-export default canvasMasterActions;
+export default canvasActionFactory;

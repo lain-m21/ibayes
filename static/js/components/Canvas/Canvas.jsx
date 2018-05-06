@@ -15,15 +15,18 @@ export default class Canvas extends Component {
         
         const nodes = {...this.props.nodes}
         for (const key in nodes) {
-            nodesDOM.push(<Node {...nodes[key]} nodeActions={this.props.nodeActions} />);
+            nodesDOM.push(<Node {...nodes[key]} nodeActions={...this.props.nodeActions} />);
         }
         const edges = {...this.props.edges}
         for (const key in edges) {
-            edgesDOM.push(<Edge {...edges[key]} edgeActions={this.props.edgeActions} />);
+            const source = nodes[edges[key].source];
+            const destination = nodes[edges[key].destination];
+            const edge = {source: source, destination: destination}
+            edgesDOM.push(<Edge {...edge} edgeActions={...this.props.edgeActions} />);
         }
         const plates = {...this.props.plates}
         for (const key in plates) {
-            platesDOM.push(<Plate {...plates[key]} plateActions={this.props.plateActions} />);
+            platesDOM.push(<Plate {...plates[key]} plateActions={...this.props.plateActions} />);
         }
         return {nodes: nodesDOM, edges: edgesDOM, plates: platesDOM};
     }
