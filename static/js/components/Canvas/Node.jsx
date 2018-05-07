@@ -48,10 +48,10 @@ export default class Node extends Component {
         this.props.onDrag(payload, this.meta);
     }
     handleMouseEnter = (e) => {
-        this.props.onMouseOver({}, this.meta);
+        this.props.onMouseEnter({}, this.meta);
     }
     handleMouseLeave = (e) => {
-        this.props.onMouseOut({}, this.meta);
+        this.props.onMouseLeave({}, this.meta);
     }
 
     render() {

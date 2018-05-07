@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Canvas, Pane } from '../components';
-import canvasActionFactory from '../actions';
+import { canvasActionFactory, paneActions } from '../actions';
 
 class CanvasContainer extends Component {
     render() {
@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => {
         nodeActions: canvasActionFactory(dispatch, 'NODE'),
         edgeActions: canvasActionFactory(dispatch, 'EDGE'),
         plateActions: canvasActionFactory(dispatch, 'PLATE'),
-        paneActions: null
+        paneActions: paneActions
     };
 }
 

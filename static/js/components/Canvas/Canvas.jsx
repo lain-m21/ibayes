@@ -55,8 +55,10 @@ export default class Canvas extends Component {
     handleMouseLeave = (e) => {
         this.props.canvasActions.onMouseLeave({}, {});
     }
-    handlePressDeleteKey = (e) => {
-        this.props.canvasActions.onDelete({}, {})
+    handleKeyPress = (e) => {
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            this.props.canvasActions.onDelete({}, {});
+        }
     }
 
     renderGraph = () => {
@@ -94,6 +96,7 @@ export default class Canvas extends Component {
                 onMouseUp={this.handleMouseUp}
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
+                onKeyPress={this.handleKeyPress}
                 >
                 <BackGround />
                 <g className="graph">

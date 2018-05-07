@@ -3,63 +3,63 @@ function canvasActionFactory(dispatch, componentType='CANVAS') {
     // TODO: more sophisticated/complicated composited actions to be defined
     
     const actions = {
-        onMouseDown: dispatch((payload, meta) => { 
+        onMouseDown: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_MOUSE_DOWN', 
                 payload: payload, 
                 meta: meta
             } 
         }),
-        onMouseUp: dispatch((payload, meta) => {
+        onMouseUp: (payload, meta) => dispatch(() => {
             return {
                 type: componentType + '_ON_MOUSE_UP', 
                 payload: payload, 
                 meta: meta
             }
         }),
-        onDrag: dispatch((payload, meta) => { 
+        onDrag: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_DRAG', 
                 payload: payload, 
                 meta: meta
             }
         }),
-        onSingleClick: dispatch((payload, meta) => { 
+        onSingleClick: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_SINGLE_CLICK', 
                 payload: payload, 
                 meta: meta
             } 
         }),
-        onDoubleClick: dispatch((payload, meta) => { 
+        onDoubleClick: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_DOUBLE_CLICK', 
                 payload: payload, 
                 meta: meta
             } 
         }),
-        onShiftClick: dispatch((payload, meta) => { 
+        onShiftClick: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_SHIFT_CLICK', 
                 payload: payload, 
                 meta: meta
             } 
         }),
-        onMouseEnter: dispatch((payload, meta) => {
+        onMouseEnter: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_MOUSE_ENTER',
                 payload: payload,
                 meta: meta
             }
         }),
-        onMouseLeave: dispatch((payload, meta) => {
+        onMouseLeave: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_MOUSE_LEAVE',
                 payload: payload,
                 meta: meta
             }
         }),
-        onDelete: dispatch((payload, meta) => { 
+        onDelete: (payload, meta) => dispatch(() => { 
             return {
                 type: componentType + '_ON_PRESS_DELETE_KEY', 
                 payload: payload, 

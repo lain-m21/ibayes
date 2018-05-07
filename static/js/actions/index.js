@@ -1,3 +1,4 @@
 import canvasActionFactory from './canvas';
+import paneActions from './pane';
 
-export { canvasActionFactory };
+export { canvasActionFactory, paneActions };
