@@ -2,45 +2,42 @@ const initialState = {};
 
 export default function nodeReducer(state=initialState, action) {
     const { type, payload, meta } = action;
-    const nodes = {...state.nodes};
-    const nodeIDList = {...state.nodeIDList};
-    const selectedComponents = {...state.selectedComponents};
-    const newState = {...state};
+    const { nodes, edges, nodeIDList, edgeIDList, selectedComponents, mode } = {...state};
     switch (type) {
         case 'NODE_ON_MOUSE_DOWN':
-            if (state.mode === 'select') {
+            if (mode === 'select') {
                 if (nodes[meta.id].embodied && !nodes[meta.id].selected) {
                     nodes[meta.id].selected = true;
                     selectedComponents.nodes.push(meta.id);
-                    newState.nodes = nodes;
                 }
-            } else if (state.mode === 'draw_edge_select_source') {
-                const tmp_id = -1;
-                nodes[tmp_id] = {x: payload.originX, y: payload.originY, embodied: false, selected: false, visible: false};
-                const edge = {source: meta.id, destination: tmp_id, embodied: false, selected: false};
-                newState.edges.push(edge);
-                newState.nodes = nodes;
-                newState.mode = 'draw_edge_select_destination';
+            } else if (mode === 'draw_edge_select_source') {
+                const edge_id = edgeIDList.length;
+                nodes[edge_id] = {x: payload.originX, y: payload.originY, embodied: false, selected: false, visible: false};
+                const edge = {source: meta.id, destination: edge_id, embodied: false, selected: false};
+                edges[edge_id] = edge;
+                edgeIDList.push(edge_id);
+                mode = 'draw_edge_select_destination';
             }
         case 'NODE_ON_MOUSE_UP':
-            if (state.mode === 'select') {
+            if (mode === 'select') {
                 if (nodes[meta.id].embodied && !nodes[meta.id].selected) {
                     nodes[meta.id].selected = true;
                     selectedComponents.nodes.push(meta.id);
-                    newState.nodes = nodes;
                 }
-            } else if (state.mode === 'draw_edge_select_destination') {
-                const edge = newState.edges.pop();
-                const tmp_id = edge.destination;
-                edge.destination = meta.id;
-                edge.embodied = true;
-                newState.edges.push(edge);
-                delete nodes[tmp_id];
-                newState.nodes = nodes;
-                newState.mode = 'draw_edge_select_source';
+            } else if (mode === 'draw_edge_select_destination') {
+                if (nodes[meta.id].embodied) {
+                    const edge_id = edgeIDList.pop();
+                    const edge = edges[edge_id];
+                    const tmp_node_id = edge.destination;
+                    edge.destination = meta.id;
+                    edge.embodied = true;
+                    edges.push(edge);
+                    delete nodes[tmp_node_id];
+                    mode = 'draw_edge_select_source';
+                }
             }
         case 'NODE_ON_SINGLE_CLICK':
-            if (state.mode === 'draw_node') {
+            if (mode === 'draw_node') {
                 nodes[meta.id].embodied = true;
                 nodeIDList.push(meta.id);
                 newState.nodes = nodes;

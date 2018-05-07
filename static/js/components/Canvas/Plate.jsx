@@ -11,15 +11,17 @@ export default class Plate extends Component {
         )
     }
     getPlate = () => {
-        const topLeft = [this.props.x, this.props.y];
-        const topRight = [topLeft[0] + this.props.width, topLeft[1]];
-        const bottomLeft = [topLeft[0], topLeft[1] + this.props.height];
-        const bottomRight = [topLeft[0] + this.props.width, topLeft[1] + this.props.height];
+        const corners = [
+            [this.props.x, this.props.y],
+            [this.props.x + this.props.width, this.props.y],
+            [this.props.x + this.props.width, this.props.y + this.props.height],
+            [this.props.x, this.props.y + this.props.height]
+        ];
         
-        const cornerPoints = `${topLeft[0]},${topLeft[1]}`
-        cornerPoints += ` ${topRight[0]},${topRight[1]}`
-        cornerPoints += ` ${bottomRight[0]},${bottomRight[1]}`
-        cornerPoints += ` ${bottomLeft[0]},${bottomLeft[1]}`
+        const cornerPoints = `${corners[0][0]},${corners[0][1]}`
+        cornerPoints += ` ${corners[1][0]},${corners[1][1]}`
+        cornerPoints += ` ${corners[2][0]},${corners[2][1]}`
+        cornerPoints += ` ${corners[3][0]},${corners[3][1]}`
         
         if (this.props.selected) {
             const plateEdgeStyle = plateConfigs.edge['selected'];
@@ -34,10 +36,10 @@ export default class Plate extends Component {
         ];
         
         if (this.props.embodied) {
-            plate.push(this.getCornerDOM(topLeft, 'nw-resize'));
-            plate.push(this.getCornerDOM(topRight, 'ne-resize'));
-            plate.push(this.getCornerDOM(bottomLeft, 'sw-resize'));
-            plate.push(this.getCornerDOM(bottomRight, 'se-resize'));
+            plate.push(this.getCornerDOM(corners[0], 'nw-resize'));
+            plate.push(this.getCornerDOM(corners[1], 'ne-resize'));
+            plate.push(this.getCornerDOM(corners[2], 'nw-resize'));
+            plate.push(this.getCornerDOM(corners[3], 'ne-resize'));
         }
 
         return plate;
