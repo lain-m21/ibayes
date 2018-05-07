@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Canvas } from '../components';
+import { Canvas, Pane } from '../components';
 import canvasActionFactory from '../actions';
 
 class CanvasContainer extends Component {
     render() {
         return (
-            <svg width="100%" height="100%">
-                <Canvas {...this.props} />
-            </svg>
+            <div className="canvas-container">
+                <Pane {...this.props}/>
+                <svg width="100%" height="100%">
+                    <Canvas {...this.props} />
+                </svg>
+            </div>
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        meta: state.meta,
+        canvas: state.canvasState,
         nodes: state.nodes,
         edges: state.edges,
         plates: state.plates,
@@ -28,7 +31,8 @@ const mapDispatchToProps = dispatch => {
         canvasActions: canvasActionFactory(dispatch, 'CANVAS'),
         nodeActions: canvasActionFactory(dispatch, 'NODE'),
         edgeActions: canvasActionFactory(dispatch, 'EDGE'),
-        plateActions: canvasActionFactory(dispatch, 'PLATE')
+        plateActions: canvasActionFactory(dispatch, 'PLATE'),
+        paneActions: null
     };
 }
 

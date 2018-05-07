@@ -60,6 +60,10 @@ export default function nodeReducer(state, action) {
                 nodes[tmp_id].x += payload.xDiff;
                 nodes[tmp_id].y += payload.yDiff;
             }
+        case 'NODE_ON_MOUSE_ENTER':
+            return state;
+        case 'NODE_ON_MOUSE_LEAVE':
+            return state;
         default:
             return state;
     }

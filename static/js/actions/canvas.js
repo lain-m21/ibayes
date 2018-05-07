@@ -17,9 +17,9 @@ function canvasActionFactory(dispatch, componentType='CANVAS') {
                 meta: meta
             }
         }),
-        onMouseMove: dispatch((payload, meta) => { 
+        onDrag: dispatch((payload, meta) => { 
             return {
-                type: componentType + '_ON_MOUSE_MOVE', 
+                type: componentType + '_ON_DRAG', 
                 payload: payload, 
                 meta: meta
             }
@@ -45,9 +45,23 @@ function canvasActionFactory(dispatch, componentType='CANVAS') {
                 meta: meta
             } 
         }),
+        onMouseEnter: dispatch((payload, meta) => {
+            return {
+                type: componentType + '_ON_MOUSE_ENTER',
+                payload: payload,
+                meta: meta
+            }
+        }),
+        onMouseLeave: dispatch((payload, meta) => {
+            return {
+                type: componentType + '_ON_MOUSE_LEAVE',
+                payload: payload,
+                meta: meta
+            }
+        }),
         onDelete: dispatch((payload, meta) => { 
             return {
-                type: componentType + '_ON_DELETE', 
+                type: componentType + '_ON_PRESS_DELETE_KEY', 
                 payload: payload, 
                 meta: meta
             } 

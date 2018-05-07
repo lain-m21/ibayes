@@ -11,6 +11,10 @@ export default function edgeReducer(state=initialState, action) {
                     selectedComponents.edge.push(meta.id);
                 }
             }
+        case 'EDGE_ON_MOUSE_ENTER':
+            return state;
+        case 'EDGE_ON_MOUSE_LEAVE':
+            return state;
         default:
             return state;
     }

@@ -1,9 +1,6 @@
-import { Canvas, Background, Node, Edge, Plate } from './Canvas';
+import { Canvas, Pane } from './Canvas';
 
 export {
     Canvas,
-    Background,
-    Node,
-    Edge,
-    Plate,
+    Pane
 }

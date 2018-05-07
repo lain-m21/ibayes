@@ -1,13 +1,64 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import Node from './Node';
 import Edge from './Edge';
 import Plate from './Plate';
-import BackGround from './BackGround'
+import BackGround from './BackGround';
 
 
 export default class Canvas extends Component {
+    handleClick = (e) => {
+        if (e.shiftKey) {
+            this.props.canvasActions.onShiftKeyClick({}, {});
+        } else {
+            this.props.canvasActions.onSingleClick({}, {});
+        }
+    }
+    handleDoubleClick = (e) => {
+        this.props.canvasActions.onDoubleClick({}, {});
+    }
+    handleContextMenu = (e) => {
+        this.props.canvasActions.onContextMenu({}, {});
+    }
+    handleMouseDown = (e) => {
+        if (e.shiftKey) {
+            return null;
+        }
+        document.addEventListener('mousemove', this.handleMouseMove);
+        const payload = {
+            originX: e.pageX, 
+            originY: e.pageY,
+        };
+        this.props.canvasActions.onMouseDown(payload, {});
+    }
+    handleMouseUp = (e) => {
+        if (e.shiftKey) {
+            return null;
+        }
+        document.removeEventListener('mousemove', this.handleDrag);
+        this.props.canvasActions.onMouseUp({}, {})
+    }
+    handleDrag = (e) => {
+        const xDiff = e.pageX - this.props.canvas.originX;
+        const yDiff = e.pageY - this.props.canvas.originY;
+        const payload = {
+            originX: e.pageX, 
+            originY: e.pageY,
+            xDiff: xDiff,
+            yDiff: yDiff
+        };
+        this.props.canvasActions.onDrag(payload, {});
+    }
+    handleMouseEnter = (e) => {
+        this.props.canvasActions.onMouseEnter({}, {});
+    }
+    handleMouseLeave = (e) => {
+        this.props.canvasActions.onMouseLeave({}, {});
+    }
+    handlePressDeleteKey = (e) => {
+        this.props.canvasActions.onDelete({}, {})
+    }
+
     renderGraph = () => {
         const nodesDOM = [];
         const edgesDOM = [];
@@ -15,31 +66,40 @@ export default class Canvas extends Component {
         
         const nodes = {...this.props.nodes}
         for (const key in nodes) {
-            nodesDOM.push(<Node {...nodes[key]} nodeActions={...this.props.nodeActions} />);
+            nodesDOM.push(<Node {...nodes[key]} {...this.props.canvas} {...this.props.nodeActions} />);
         }
         const edges = {...this.props.edges}
         for (const key in edges) {
             const source = nodes[edges[key].source];
             const destination = nodes[edges[key].destination];
             const edge = {source: source, destination: destination}
-            edgesDOM.push(<Edge {...edge} edgeActions={...this.props.edgeActions} />);
+            edgesDOM.push(<Edge {...edge} {...this.props.canvas} {...this.props.edgeActions} />);
         }
         const plates = {...this.props.plates}
         for (const key in plates) {
-            platesDOM.push(<Plate {...plates[key]} plateActions={...this.props.plateActions} />);
+            platesDOM.push(<Plate {...plates[key]} {...this.props.canvas} {...this.props.plateActions} />);
         }
-        return {nodes: nodesDOM, edges: edgesDOM, plates: platesDOM};
+        return { nodesDOM, edgesDOM, platesDOM };
     }
 
     render() {
-        const { nodes, edges, plates } = this.renderGraph();
+        const { nodesDOM, edgesDOM, platesDOM } = this.renderGraph();
+        const translate = `translate(${this.props.canvas.x}, ${this.props.canvas.y})`;
         return (
-            <g className="canvas" {...this.props.canvasActions}>
+            <g transform={translate} className="canvas"
+                onClick={this.handleClick}
+                onDoubleClick={this.handleDoubleClick}
+                onContextMenu={this.handleContextMenu}
+                onMouseDown={this.handleMouseDown}
+                onMouseUp={this.handleMouseUp}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
+                >
                 <BackGround />
                 <g className="graph">
-                    {nodes}
-                    {edges}
-                    {plates}
+                    {nodesDOM}
+                    {edgesDOM}
+                    {platesDOM}
                 </g>
             </g>
         )

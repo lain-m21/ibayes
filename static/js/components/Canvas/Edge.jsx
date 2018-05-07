@@ -47,7 +47,7 @@ export default class Edge extends Component {
         const path = this.getPath(data);
         // TODO: edge drawing mode!
         return (
-            <g id={this.props.id} className="edge" 
+            <g className="edge" 
                 onClick={this.handleClick}
                 onContextMenu={this.handleContextMenu}
                 onMouseDown={this.handleMouseDown}

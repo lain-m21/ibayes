@@ -4,14 +4,12 @@ import canvasReducer from './canvas'
 import nodeReducer from './node'
 import edgeReducer from './edge'
 import plateReducer from './plate'
-import selectReducer from './select'
 
 export const CanvasReducers = reduceReducers(
     canvasReducer,
     nodeReducer,
     edgeReducer,
     plateReducer,
-    selectReducer
 );
 
 export const canvasInitialState = {

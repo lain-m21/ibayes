@@ -12,10 +12,10 @@ export default class Plate extends Component {
     }
     getPlate = () => {
         const corners = [
-            [this.props.x, this.props.y],
-            [this.props.x + this.props.width, this.props.y],
-            [this.props.x + this.props.width, this.props.y + this.props.height],
-            [this.props.x, this.props.y + this.props.height]
+            [0, 0],
+            [0 + this.props.width, 0],
+            [0 + this.props.width, 0 + this.props.height],
+            [0, 0 + this.props.height]
         ];
         
         const cornerPoints = `${corners[0][0]},${corners[0][1]}`
@@ -47,9 +47,9 @@ export default class Plate extends Component {
 
     render() {
         const plate = this.getPlate();
-        const translate = `translate(${this.props.x}, ${this.props.y})`
+        const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (
-            <g transform={translate} id={this.props.id} className="plate">
+            <g transform={translate} className="plate">
                 {plate}
             </g>
         )

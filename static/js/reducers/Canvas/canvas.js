@@ -76,6 +76,10 @@ export default function canvasReducer(state, action) {
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
+        case 'CANVAS_ON_MOUSE_ENTER':
+            return state;
+        case 'CANVAS_ON_MOUSE_LEAVE':
+            return state;
         case 'CANVAS_ON_PRESS_DELETE_KEY':
             if (canvasState.mode === 'select') {
                 const edgeDeleteList = new Set(selectedComponents.edge);

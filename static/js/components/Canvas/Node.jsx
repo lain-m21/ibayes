@@ -34,10 +34,11 @@ export default class Node extends Component {
             return null;
         }
         document.removeEventListener('mousemove', this.handleDrag);
+        this.props.onMouseUp({}, this.meta)
     }
     handleDrag = (e) => {
-        const xDiff = e.pageX - this.props.x;
-        const yDiff = e.pageY - this.props.y;
+        const xDiff = e.pageX - this.props.originX;
+        const yDiff = e.pageY - this.props.originY;
         const payload = {
             originX: e.pageX, 
             originY: e.pageY,
@@ -46,10 +47,10 @@ export default class Node extends Component {
         };
         this.props.onDrag(payload, this.meta);
     }
-    handleMouseOver = (e) => {
+    handleMouseEnter = (e) => {
         this.props.onMouseOver({}, this.meta);
     }
-    handleMouseOut = (e) => {
+    handleMouseLeave = (e) => {
         this.props.onMouseOut({}, this.meta);
     }
 
@@ -57,14 +58,14 @@ export default class Node extends Component {
         const node = nodeConfigs[this.props.type][this.props.state];
         const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (
-            <g transform={translate} id={this.props.id} className="node"
+            <g transform={translate} className="node"
                 onClick={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
                 onContextMenu={this.handleContextMenu}
                 onMouseDown={this.handleMouseDown}
                 onMouseUp={this.handleMouseUp}
-                onMouseOver={this.handleMouseOver}
-                onMouseOut={this.handleMouseOut}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
                 >
                 {node}
             </g>

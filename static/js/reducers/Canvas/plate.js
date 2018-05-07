@@ -16,11 +16,11 @@ export default function plateReducer(state=initialState, action) {
                 plates[meta.id].embodied = true;
                 plateIDList.push(meta.id);
             }
-        case 'NODE_ON_DOUBLE_CLICK':
+        case 'PLATE_ON_DOUBLE_CLICK':
             return newState;
-        case 'NODE_ON_SHIFT_CLICK':
+        case 'PLATE_ON_SHIFT_CLICK':
             return newState;
-        case 'NODE_ON_DRAG':
+        case 'PLATE_ON_DRAG':
             for (let node_id in selectedComponents.node) {
                 nodes[node_id].x += payload.xDiff;
                 nodes[node_id].y += payload.yDiff;
@@ -29,6 +29,10 @@ export default function plateReducer(state=initialState, action) {
                 plates[plate_id].x += payload.xDiff;
                 plates[plate_id].y += payload.yDiff;
             }
+        case 'PLATE_ON_MOUSE_ENTER':
+            return state;
+        case 'PLATE_ON_MOUSE_LEAVE':
+            return state;
         default:
             return state;
     }
