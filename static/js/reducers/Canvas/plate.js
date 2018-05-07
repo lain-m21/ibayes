@@ -2,41 +2,36 @@ const initialState = {};
 
 export default function plateReducer(state=initialState, action) {
     const { type, payload, meta } = action;
-    const nodes = {...state.nodes};
-    const selectedComponents = {...state.selectedComponents};
-    const newState = {...state};
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
-        case 'NODE_ON_MOUSE_DOWN':
-            if (state.mode === 'select') {
-                if (nodes[meta.id].embodied && !nodes[meta.id].selected) {
-                    nodes[meta.id].selected = true;
-                    selectedComponents.nodes.push(meta.id);
-                    newState.nodes = nodes;
+        case 'PLATE_ON_MOUSE_DOWN':
+            if (canvasState.mode === 'select') {
+                if (plates[meta.id].embodied && !plates[meta.id].selected) {
+                    plates[meta.id].selected = true;
+                    selectedComponents.plate.push(meta.id);
                 }
             }
-        case 'NODE_ON_SINGLE_CLICK':
-            if (state.mode === 'draw') {
-                nodes[meta.id].embodied = true;
-                newState.nodes = nodes;
+        case 'PLATE_ON_SINGLE_CLICK':
+            if (canvasState.mode === 'draw') {
+                plates[meta.id].embodied = true;
+                plateIDList.push(meta.id);
             }
         case 'NODE_ON_DOUBLE_CLICK':
             return newState;
         case 'NODE_ON_SHIFT_CLICK':
             return newState;
         case 'NODE_ON_DRAG':
-            for (node_id in selectedComponents.nodes) {
+            for (let node_id in selectedComponents.node) {
                 nodes[node_id].x += payload.xDiff;
                 nodes[node_id].y += payload.yDiff;
             }
-            const plates = {...state.plates};
-            for (plate_id in selectedComponents.plates) {
+            for (let plate_id in selectedComponents.plate) {
                 plates[plate_id].x += payload.xDiff;
                 plates[plate_id].y += payload.yDiff;
             }
-            newState.nodes = nodes;
-            newState.plates = plates;
         default:
-            return newState;
+            return state;
     }
+    const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
     return newState;
 }

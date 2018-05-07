@@ -1,3 +1,3 @@
-import CanvasReducers from './Canvas';
+import { CanvasReducers, canvasInitialState } from './Canvas';
 
-export { CanvasReducers };
+export { CanvasReducers, canvasInitialState };

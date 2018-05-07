@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import reduceReducers from 'reduce-reducers';
 
 import canvasReducer from './canvas'
 import nodeReducer from './node'
@@ -6,12 +6,32 @@ import edgeReducer from './edge'
 import plateReducer from './plate'
 import selectReducer from './select'
 
-const CanvasReducers = combineReducers({
-    canvas: canvasReducer,
-    node: nodeReducer,
-    edge: edgeReducer,
-    plate: plateReducer,
-    select: selectReducer
-});
+export const CanvasReducers = reduceReducers(
+    canvasReducer,
+    nodeReducer,
+    edgeReducer,
+    plateReducer,
+    selectReducer
+);
 
-export default CanvasReducers;
+export const canvasInitialState = {
+    nodes: {},
+    edges: {},
+    plates: {},
+    nodeIDList: [],
+    edgeIDList: [],
+    plateIDList: [],
+    selectedComponents: {
+        node: [],
+        edge: [],
+        plate: []
+    },
+    canvasState: {
+        mode: 'select',
+        hover: [],
+        originX: 0,
+        originY: 0,
+        x: 0,
+        y: 0
+    }
+}

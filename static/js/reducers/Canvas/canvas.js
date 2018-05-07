@@ -1,32 +1,36 @@
-const initialState = {};
+function renewComponents(components, idList) {
+    let idRange = [...idList.keys()];
+    const newComponents = [...components];
+    for (let newID of idRange) {
+        let oldID = idList[newID];
+        delete newComponents[oldID];
+        newComponents[newID] = components[oldID];
+    }
+    const newIDList = [...idRange];
+    return [ newComponents, newIDList ];
+}
 
-export default function canvasReducer(state=initialState, action) {
+export default function canvasReducer(state, action) {
     const { type, payload, meta } = action;
-    const { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents } = {...state};
-    const newState = {...state};
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
         case 'CANVAS_ON_MOUSE_DOWN':
-            if (state.mode === 'draw_plate_start_drawing') {
+            if (canvasState.mode === 'draw_plate_start_drawing') {
                 const plate_id = plateIDList.length;
                 const newPlate = {x: payload.originX, y: payload.originY, width=0, height=0, embodied=false, selected=false, id: plate_id};
                 plates[plate_id] = newPlate;
                 plateIDList.push(plate_id);
-                newState.plates = plates;
-                newState.plateIDList = plateIDList;
-                state.mode = 'draw_plate_on_drawing';
             }
-            newState.originX = payload.originX;
-            newState.originY = payload.originY;
+            canvasState.originX = payload.originX;
+            canvasState.originY = payload.originY;
         case 'CANVAS_ON_MOUSE_UP':
-            if (state.mode === 'draw_edge_select_destination' && !state.hoveringNode) {
+            if (canvasState.mode === 'draw_edge_select_destination' && !canvasState.hovering) {
                 const edge = edges.pop();
                 const tmp_id = edge.destination;
                 delete edge;
                 delete nodes[tmp_id];
-                newState.nodes = nodes;
-                newState.edges = edges;
-                newState.mode = 'draw_edge_select_source';
-            } else if (state.mode === 'draw_plate_on_drawing') {
+                canvasState.mode = 'draw_edge_select_source';
+            } else if (canvasState.mode === 'draw_plate_on_drawing') {
                 const newPlate = plates.pop();
                 if (plates.width === 0 || plates.height === 0) {
                     plateIDList.splice(newPlate.id, 1);
@@ -34,79 +38,73 @@ export default function canvasReducer(state=initialState, action) {
                     newPlate.embodied = true;
                     plates.push(newPlate);
                 }
-                newState.plates = plates;
-                newState.mode = 'draw_plate_start_drawing'
+                canvasState.mode = 'draw_plate_start_drawing'
             }
         case 'CANVAS_ON_SINGLE_CLICK':
-            if (state.mode === 'select' && !state.hoveringNode && !state.hoveringEdge && !state.hoveringPlate) {
-                for (const node_id of selectedComponents.nodes) {
+            if (canvasState.mode === 'select' && !canvasState.hovering) {
+                for (let node_id of selectedComponents.node) {
                     nodes[node_id].selected = false;
                 }
-                for (const edge_id of selectedComponents.edges) {
+                for (let edge_id of selectedComponents.edge) {
                     edges[edge_id].selected = false;
                 }
-                for (const plate_id of selectedComponents.plates) {
+                for (let plate_id of selectedComponents.plate) {
                     plates[plate_id].selected = false;
                 }
-                newState.selectedComponents = {nodes: [], edges: [], plates: []};
+                selectedComponents = {node: [], edge: [], plate: []};
             }
         case 'CANVAS_ON_DOUBLE_CLICK':
-            return newState;
+            return state;
         case 'CANVAS_ON_SHIFT_CLICK':
-            return newState;
+            return state;
         case 'CANVAS_ON_DRAG':
-            if (state.mode === 'select') {
-                if (selectedComponents.nodes.length > 0 || selectedComponents.edges.length > 0 || selectedComponents.plates.length > 0) {
-                    for (node_id of selectedComponents.nodes) {
-                        nodes[node_id].x += payload.xDiff;
-                        nodes[node_id].y += payload.yDiff;
-                    }
-                    const plates = {...state.plates};
-                    for (plate_id of selectedComponents.plates) {
-                        plates[plate_id].x += payload.xDiff;
-                        plates[plate_id].y += payload.yDiff;
-                    }
-                    newState.nodes = nodes;
-                    newState.plates = plates;
-                } else {
-                    newState.x += payload.xDiff;
-                    newState.y += payload.yDiff;
+            if (canvasState.mode === 'select') {
+                if (selectedComponents.node.length == 0 && selectedComponents.edge.length == 0 && selectedComponents.plate.length == 0) {
+                    canvasState.x += payload.xDiff;
+                    canvasState.y += payload.yDiff;
                 }
-            } else if (state.mode === 'draw_edge_select_destination') {
-                const tmp_id = -1;
-                nodes[tmp_id].x += payload.xDiff;
-                nodes[tmp_id].y += payload.yDiff;
-                newState.nodes = nodes;
-            } else if (state.mode === 'draw_plate_on_drawing') {
-                const plate_id = plateIDList.pop();
+            } else if (canvasState.mode === 'draw_edge_select_destination') {
+                let edge_id = edgeIDList.pop();
+                nodes[edge_id].x += payload.xDiff;
+                nodes[edge_id].y += payload.yDiff;
+                edgeIDList.push(edge_id);
+            } else if (canvasState.mode === 'draw_plate_on_drawing') {
+                let plate_id = plateIDList.pop();
                 plates[plate_id].width = payload.xDiff;
                 plates[plate_id].height = payload.yDiff;
-                newState.plates = plates;
+                plateIDList.push(plate_id);
             }
-            newState.originX = payload.originX;
-            newState.originY = payload.originY;
+            canvasState.originX = payload.originX;
+            canvasState.originY = payload.originY;
         case 'CANVAS_ON_PRESS_DELETE_KEY':
-            if (state.mode === 'select') {
-                const edgeDeleteList = new Set(selectedComponents.edges);
-                for (const node_id of selectedComponents.nodes) {
-                    nodeIDList.splice(node_id, 1);
-                    for (const edge_id of nodes[node_id].edges) {
+            if (canvasState.mode === 'select') {
+                const edgeDeleteList = new Set(selectedComponents.edge);
+                for (let node_id of selectedComponents.node) {
+                    let idx = nodeIDList.indexOf(node_id);
+                    nodeIDList.splice(idx, 1);
+                    for (let edge_id of nodes[node_id].edge) {
                         edgeDeleteList.add(edge_id);
                     }
                     delete nodes[node_id];
                 }
-                for (const edge_id of edgeDeleteList.values()) {
-                    edges[edge_id].selected = false;
+                for (let edge_id of edgeDeleteList.values()) {
+                    let idx = edgeIDList.indexOf(edge_id);
+                    edgeIDList.splice(idx, 1);
+                    delete edges[edge_id];
                 }
-                for (const plate_id of selectedComponents.plates) {
-                    plates[plate_id].selected = false;
+                for (let plate_id of selectedComponents.plate) {
+                    let idx = plateIDList.indexOf(plate_id);
+                    plateIDList.splice(idx, 1)
+                    delete plates[idx];
                 }
-                newState.nodes = nodes;
-                newState.edges = edges;
-                newState.plates = plates;
+                selectedComponents = {node: [], edge: [], plate: []};
+                nodes, nodeIDList = renewComponents(nodes, nodeIDList);
+                edges, edgeIDList = renewComponents(edges, edgeIDList);
+                plates, plateIDList = renewComponents(plates, plateIDList);
             }
         default:
-            return newState;
+            return state;
     }
+    const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
     return newState;
 }
