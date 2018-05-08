@@ -17,8 +17,8 @@ function* handleCompileButtonClick() {
     yield takeEvery('PANE_ON_COMPILE_BUTTON_CLICK', function*(action) {
         const { graph } = action.payload;
         const result = yield call(compile, graph)
-        const payload = {};
-        const meta = result;
+        const payload = result;
+        const meta = {};
         yield put({type: 'PANE_ON_COMPILE_BUTTON_AFTER_CLICK', payload, meta})
     })
 }

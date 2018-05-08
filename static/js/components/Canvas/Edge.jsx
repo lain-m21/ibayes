@@ -6,17 +6,24 @@ import { nodeConfigs, edgeConfigs } from './configs';
 export default class Edge extends Component {
     meta = {id: this.props.id};
 
+    handleClick = (e) => {
+        if (e.shiftKey) {
+            this.props.onShiftKeyClick({}, this.meta);
+        } else {
+            this.props.onSingleClick({}, this.meta);
+        }
+    }
+    handleDoubleClick = (e) => {
+        this.props.onDoubleClick({}, this.meta);
+    }
     handleContextMenu = (e) => {
         this.props.onContextMenu({}, this.meta);
     }
     handleMouseDown = (e) => {
-        if (e.shiftKey || !this.props.selected) {
+        if (e.shiftKey) {
             return null;
         } else {
-            // TODO: edge drawing mode!
-            document.addEventListener('mousemove', this.handleMouseMove);
-            const payload = {originX: e.pageX, originY: e.pageY};
-            this.props.onMouseDown(payload, this.meta);
+            this.props.onMouseDown({}, this.meta);
         }
     }
 
@@ -26,7 +33,7 @@ export default class Edge extends Component {
         const yDiff = destination.y - source.y;
         const theta = Math.atan2(yDiff, xDiff);
         const sourceRadius = nodeConfigs[source.type].radius;
-        const destinationRadius = nodeConfigs[source.type].radius;
+        const destinationRadius = nodeConfigs[destination.type].radius;
         const x1 = source.x + 1.1 * Math.cos(theta) * sourceRadius;
         const y1 = source.y + 1.1 * Math.sin(theta) * sourceRadius;
         const x2 = destination.x + 1.1 * Math.cos(theta) * destinationRadius;
@@ -45,13 +52,11 @@ export default class Edge extends Component {
     render() {
         const data = this.computePath();
         const path = this.getPath(data);
-        // TODO: edge drawing mode!
         return (
             <g className="edge" 
                 onClick={this.handleClick}
+                onDoubleClick={this.handleDoubleClick}
                 onContextMenu={this.handleContextMenu}
-                onMouseDown={this.handleMouseDown}
-                onMouseUp={this.handleMouseUp}
                 >
                 <path {...edgeConfigs} d={path} />
             </g>

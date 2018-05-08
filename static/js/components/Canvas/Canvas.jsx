@@ -24,7 +24,7 @@ export default class Canvas extends Component {
         if (e.shiftKey) {
             return null;
         }
-        document.addEventListener('mousemove', this.handleMouseMove);
+        document.addEventListener('mousemove', this.handleDrag);
         const payload = {
             originX: e.pageX, 
             originY: e.pageY,
@@ -67,18 +67,18 @@ export default class Canvas extends Component {
         const platesDOM = [];
         
         const nodes = {...this.props.nodes}
-        for (const key in nodes) {
+        for (let key in nodes) {
             nodesDOM.push(<Node {...nodes[key]} {...this.props.canvas} {...this.props.nodeActions} />);
         }
         const edges = {...this.props.edges}
-        for (const key in edges) {
-            const source = nodes[edges[key].source];
-            const destination = nodes[edges[key].destination];
-            const edge = {source: source, destination: destination}
+        for (let key in edges) {
+            let source = nodes[edges[key].source];
+            let destination = nodes[edges[key].destination];
+            let edge = {source: source, destination: destination}
             edgesDOM.push(<Edge {...edge} {...this.props.canvas} {...this.props.edgeActions} />);
         }
         const plates = {...this.props.plates}
-        for (const key in plates) {
+        for (let key in plates) {
             platesDOM.push(<Plate {...plates[key]} {...this.props.canvas} {...this.props.plateActions} />);
         }
         return { nodesDOM, edgesDOM, platesDOM };

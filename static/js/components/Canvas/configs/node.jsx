@@ -38,22 +38,27 @@ const CompositeNodeShape = {
 export const nodeConfigs = {
     const: {
         typeID: '#const',
-        shape: ConstNodeShape
+        shape: ConstNodeShape,
+        radius: 10
     },
     param: {
         typeID: '#param',
-        shape: ParamNodeShape
+        shape: ParamNodeShape,
+        radius: 20
     },
     data: {
         typeID: '#data',
-        shape: DataNodeShape
+        shape: DataNodeShape,
+        radius: 20
     },
     transform: {
         typeID: '#transform',
-        shape: TransformNodeShape
+        shape: TransformNodeShape,
+        radius: 15
     },
     composite: {
         typeID: '#composite',
-        shape: CompositeNodeShape
+        shape: CompositeNodeShape,
+        radius: 25
     },
 }

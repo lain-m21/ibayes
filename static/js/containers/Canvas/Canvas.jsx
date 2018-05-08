@@ -31,7 +31,10 @@ const mapDispatchToProps = dispatch => {
         canvasActions: canvasActionFactory(dispatch, 'CANVAS'),
         nodeActions: canvasActionFactory(dispatch, 'NODE'),
         edgeActions: canvasActionFactory(dispatch, 'EDGE'),
-        plateActions: canvasActionFactory(dispatch, 'PLATE'),
+        plateActions: {
+            borderActions: canvasActionFactory(dispatch, 'PLATE_BORDER'),
+            cornerActions: canvasActionFactory(dispatch, 'PLATE_CORNER')
+        },
         paneActions: paneActions
     };
 }

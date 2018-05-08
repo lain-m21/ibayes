@@ -22,7 +22,7 @@ const buttonConfig = {
 
 export default class Pane extends Component {
     handleButtonClick = (buttonType) => {
-        payload = {
+        const payload = {
             buttonType: buttonType, 
             graph: {
                 nodes: this.props.nodes, 

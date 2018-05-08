@@ -22,30 +22,13 @@ export default class Node extends Component {
         if (e.shiftKey) {
             return null;
         }
-        document.addEventListener('mousemove', this.handleMouseMove);
-        const payload = {
-            originX: e.pageX, 
-            originY: e.pageY,
-        };
-        this.props.onMouseDown(payload, this.meta);
+        this.props.onMouseDown({}, this.meta);
     }
     handleMouseUp = (e) => {
         if (e.shiftKey) {
             return null;
         }
-        document.removeEventListener('mousemove', this.handleDrag);
         this.props.onMouseUp({}, this.meta)
-    }
-    handleDrag = (e) => {
-        const xDiff = e.pageX - this.props.originX;
-        const yDiff = e.pageY - this.props.originY;
-        const payload = {
-            originX: e.pageX, 
-            originY: e.pageY,
-            xDiff: xDiff,
-            yDiff: yDiff
-        };
-        this.props.onDrag(payload, this.meta);
     }
     handleMouseEnter = (e) => {
         this.props.onMouseEnter({}, this.meta);
