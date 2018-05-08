@@ -14,34 +14,8 @@ export default function canvasReducer(state, action) {
     const { type, payload, meta } = action;
     let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
-        case 'CANVAS_ON_MOUSE_DOWN':
-            if (canvasState.mode === 'draw_plate_start_drawing') {
-                const plate_id = plateIDList.length;
-                const newPlate = {x: payload.originX, y: payload.originY, width=0, height=0, embodied=false, selected=false, id: plate_id};
-                plates[plate_id] = newPlate;
-                plateIDList.push(plate_id);
-            }
-            canvasState.originX = payload.originX;
-            canvasState.originY = payload.originY;
-        case 'CANVAS_ON_MOUSE_UP':
-            if (canvasState.mode === 'draw_edge_select_destination' && !canvasState.hovering) {
-                const edge = edges.pop();
-                const tmp_id = edge.destination;
-                delete edge;
-                delete nodes[tmp_id];
-                canvasState.mode = 'draw_edge_select_source';
-            } else if (canvasState.mode === 'draw_plate_on_drawing') {
-                const newPlate = plates.pop();
-                if (plates.width === 0 || plates.height === 0) {
-                    plateIDList.splice(newPlate.id, 1);
-                } else {
-                    newPlate.embodied = true;
-                    plates.push(newPlate);
-                }
-                canvasState.mode = 'draw_plate_start_drawing'
-            }
-        case 'CANVAS_ON_SINGLE_CLICK':
-            if (canvasState.mode === 'select' && !canvasState.hovering) {
+        case 'CANVAS_ON_SINGLE_CLICK': {
+            if (canvasState.mode === 'select' && canvasState.hovering === 0) {
                 for (let node_id of selectedComponents.node) {
                     nodes[node_id].selected = false;
                 }
@@ -53,30 +27,104 @@ export default function canvasReducer(state, action) {
                 }
                 selectedComponents = {node: [], edge: [], plate: []};
             }
-        case 'CANVAS_ON_DOUBLE_CLICK':
+        }
+        case 'CANVAS_ON_DOUBLE_CLICK': {
             return state;
-        case 'CANVAS_ON_SHIFT_CLICK':
+        }
+        case 'CANVAS_ON_SHIFT_CLICK': {
             return state;
+        }
+        case 'CANVAS_ON_CONTEXT_MENU': {
+            return state;
+        }
+        case 'CANVAS_ON_MOUSE_DOWN':
+            if (canvasState.mode === 'draw_plate_start_drawing') {
+                const plate_id = plateIDList.length;
+                const newPlate = {
+                    id: plate_id,
+                    x: payload.originX - canvasState.x, 
+                    y: payload.originY - canvasState.y, 
+                    width: 0, 
+                    height: 0, 
+                    embodied: false, 
+                    selected: false,
+                    hovered: false,
+                    symbol: 'N',
+                    value: 1
+                };
+                plates[plate_id] = newPlate;
+                plateIDList.push(plate_id);
+            }
+            canvasState.originX = payload.originX;
+            canvasState.originY = payload.originY;
+        case 'CANVAS_ON_MOUSE_UP':
+            if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hovering === 0) {
+                const edge_id = edgeIDList.pop();
+                const edge = edges[edge_id];
+                const tmp_id = edge.destination;
+                delete edges[edge_id];
+                delete nodes[tmp_id];
+                canvasState.mode = 'draw_edge_select_source';
+            } else if (canvasState.mode === 'draw_plate_on_drawing' || canvasState.mode === 'select_plate_resizing') {
+                const plate_id = plateIDList.pop();
+                const newPlate = {...plates[plate_id]};
+                if (newPlate.width !== 0 || newPlate.height !== 0) {
+                    newPlate.embodied = true;
+                    plates[plate_id] = newPlate;
+                    plateIDList.push(plate_id);
+                }
+                canvasState.mode = canvasState.mode === 'draw_plate_on_drawing' ? 'draw_plate_start_drawing' : 'select';
+            }
         case 'CANVAS_ON_DRAG':
             if (canvasState.mode === 'select') {
                 if (selectedComponents.node.length == 0 && selectedComponents.edge.length == 0 && selectedComponents.plate.length == 0) {
                     canvasState.x += payload.xDiff;
                     canvasState.y += payload.yDiff;
                 }
+                else {
+                    for (let node_id of selectedComponents.node) {
+                        nodes[node_id].x += payload.xDiff;
+                        nodes[node_id].y += payload.yDiff;
+                    }
+                    for (let plate_id of selectedComponents.plate) {
+                        plates[plate_id].x += payload.xDiff;
+                        plates[plate_id].y += payload.yDiff;
+                    }
+                }
             } else if (canvasState.mode === 'draw_edge_select_destination') {
-                let edge_id = edgeIDList.pop();
+                const edge_id = edgeIDList.pop();
+                const node_id = edges[edge_id].destination; 
                 nodes[edge_id].x += payload.xDiff;
                 nodes[edge_id].y += payload.yDiff;
                 edgeIDList.push(edge_id);
             } else if (canvasState.mode === 'draw_plate_on_drawing') {
-                let plate_id = plateIDList.pop();
-                plates[plate_id].width = payload.xDiff;
-                plates[plate_id].height = payload.yDiff;
+                const plate_id = plateIDList.pop();
+                plates[plate_id].width += payload.xDiff;
+                plates[plate_id].height += payload.yDiff;
                 plateIDList.push(plate_id);
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
-        case 'CANVAS_ON_MOUSE_ENTER':
+        case 'CANVAS_ON_MOUSE_ENTER': {
+            if (canvasState.mode === 'draw_node_param') {
+                const node_id = nodeIDList.length;
+                const newNode = {
+                    id: node_id,
+                    x: payload.originX - canvasState.x, 
+                    y: payload.originY - canvasState.y,
+                    parents: [],
+                    children: [],
+                    selected: false,
+                    embodied: false,
+                    visible: true,
+                    hovered: false,
+                    type: 'param',
+                    distribution: 'Gaussian',
+                    params: {mu: 0, tau: 1}
+                }
+                nodes[node_id] = newNode;
+            }
+        }
             return state;
         case 'CANVAS_ON_MOUSE_LEAVE':
             return state;

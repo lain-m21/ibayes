@@ -4,37 +4,49 @@ export default function plateReducer(state=initialState, action) {
     const { type, payload, meta } = action;
     let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
-        case 'PLATE_ON_MOUSE_DOWN':
+        case 'PLATE_BORDER_ON_DOUBLE_CLICK': {
+            return state;
+        }
+        case 'PLATE_BORDER_ON_SHIFT_CLICK': {
+            return state;
+        }
+        case 'CANVAS_ON_CONTEXT_MENU': {
+            return state;
+        }
+        case 'PLATE_BORDER_ON_MOUSE_DOWN': {
             if (canvasState.mode === 'select') {
                 if (plates[meta.id].embodied && !plates[meta.id].selected) {
                     plates[meta.id].selected = true;
                     selectedComponents.plate.push(meta.id);
                 }
             }
-        case 'PLATE_ON_SINGLE_CLICK':
-            if (canvasState.mode === 'draw') {
-                plates[meta.id].embodied = true;
-                plateIDList.push(meta.id);
+        }
+        case 'PLATE_CORNER_ON_MOUSE_DOWN': {
+            if (canvasState.mode === 'select') {
+                if (plates[meta.id].embodied) {
+                    canvasState.mode = 'select_plate_resizing';
+                }
+            } else if (canvasState.mode === 'draw_plate_start_drawing') {
+                if (plates[meta.id].embodied) {
+                    canvasState.mode = 'draw_plate_on_drawings';
+                }
             }
-        case 'PLATE_ON_DOUBLE_CLICK':
-            return newState;
-        case 'PLATE_ON_SHIFT_CLICK':
-            return newState;
-        case 'PLATE_ON_DRAG':
-            for (let node_id in selectedComponents.node) {
-                nodes[node_id].x += payload.xDiff;
-                nodes[node_id].y += payload.yDiff;
+        }
+        case 'PLATE_BORDER_ON_MOUSE_ENTER': {
+            if (plates[meta.id].embodied) {
+                canvasState.hovering += 1;
+                plates[meta.id].hovered = true;
             }
-            for (let plate_id in selectedComponents.plate) {
-                plates[plate_id].x += payload.xDiff;
-                plates[plate_id].y += payload.yDiff;
+        }
+        case 'PLATE_BORDER_ON_MOUSE_LEAVE': {
+            if (edges[meta.id].embodied) {
+                canvasState.hovering -= 1;
+                plates[meta.id].hovered = false;
             }
-        case 'PLATE_ON_MOUSE_ENTER':
+        }
+        default: {
             return state;
-        case 'PLATE_ON_MOUSE_LEAVE':
-            return state;
-        default:
-            return state;
+        }
     }
     const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
     return newState;

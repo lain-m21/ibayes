@@ -22,9 +22,20 @@ export default class Edge extends Component {
     handleMouseDown = (e) => {
         if (e.shiftKey) {
             return null;
-        } else {
-            this.props.onMouseDown({}, this.meta);
         }
+        this.props.onMouseDown({}, this.meta);
+    }
+    handleMouseUp = (e) => {
+        if (e.shiftKey) {
+            return null;
+        }
+        this.props.onMouseUp({}, this.meta)
+    }
+    handleMouseEnter = (e) => {
+        this.props.onMouseEnter({}, this.meta);
+    }
+    handleMouseLeave = (e) => {
+        this.props.onMouseLeave({}, this.meta);
     }
 
     computePath = () => {
@@ -44,7 +55,6 @@ export default class Edge extends Component {
         ]
         return data;
     }
-
     getPath = line()
         .x( (d) => { return d[0] } )
         .y( (d) => { return d[1] } );
@@ -57,6 +67,10 @@ export default class Edge extends Component {
                 onClick={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
                 onContextMenu={this.handleContextMenu}
+                onMouseDown={this.handleMouseDown}
+                onMouseUp={this.handleMouseUp}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
                 >
                 <path {...edgeConfigs} d={path} />
             </g>

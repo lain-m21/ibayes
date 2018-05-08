@@ -50,7 +50,11 @@ export default class Canvas extends Component {
         this.props.canvasActions.onDrag(payload, {});
     }
     handleMouseEnter = (e) => {
-        this.props.canvasActions.onMouseEnter({}, {});
+        const payload = {
+            originX: e.pageX,
+            originY: e.pageY
+        }
+        this.props.canvasActions.onMouseEnter(payload, {});
     }
     handleMouseLeave = (e) => {
         this.props.canvasActions.onMouseLeave({}, {});

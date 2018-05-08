@@ -7,9 +7,17 @@ export default class Plate extends Component {
     meta = this.props.id;
     handleClick = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onSingleClick({}, this.meta);
+            if (e.shiftKey) {
+                this.props.borderActions.onShiftClick({}, this.meta);
+            } else {
+                this.props.borderActions.onSingleClick({}, this.meta);
+            }
         } else {
-            this.props.cornerActions.onSingleClick({}, this.meta);
+            if (e.shiftKey) {
+                this.props.cornerActions.onShiftClick({}, this.meta);
+            } else {
+                this.props.cornerActions.onSingleClick({}, this.meta);
+            }
         }
     }
     handleDoubleClick = (e, part) => {
