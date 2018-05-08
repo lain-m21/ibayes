@@ -15,7 +15,7 @@ export default function canvasReducer(state, action) {
     let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
         case 'CANVAS_ON_SINGLE_CLICK': {
-            if (canvasState.mode === 'select' && canvasState.hovering === 0) {
+            if (canvasState.mode === 'select' && (canvasState.hoveringNode === 0 || canvasState.hoveringEdge === 0 || canvasState.hoveringPlate === 0)) {
                 for (let node_id of selectedComponents.node) {
                     nodes[node_id].selected = false;
                 }
@@ -26,6 +26,25 @@ export default function canvasReducer(state, action) {
                     plates[plate_id].selected = false;
                 }
                 selectedComponents = {node: [], edge: [], plate: []};
+            } else if (canvasState.mode === 'draw_node_param') {
+                const node_id = nodeIDList.length;
+                const newNode = {
+                    id: node_id,
+                    x: payload.originX - canvasState.x, 
+                    y: payload.originY - canvasState.y,
+                    parents: [],
+                    children: [],
+                    selected: false,
+                    embodied: true,
+                    visible: true,
+                    hovered: true,
+                    type: 'param',
+                    distribution: 'Gaussian',
+                    params: {mu: 0, tau: 1}
+                }
+                nodes[node_id] = newNode;
+                nodeIDList.push(node_id);
+                canvasState.hoveringNode += 1;
             }
         }
         case 'CANVAS_ON_DOUBLE_CLICK': {
@@ -58,7 +77,7 @@ export default function canvasReducer(state, action) {
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
         case 'CANVAS_ON_MOUSE_UP':
-            if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hovering === 0) {
+            if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hoveringNode === 0) {
                 const edge_id = edgeIDList.pop();
                 const edge = edges[edge_id];
                 const tmp_id = edge.destination;
@@ -106,28 +125,11 @@ export default function canvasReducer(state, action) {
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
         case 'CANVAS_ON_MOUSE_ENTER': {
-            if (canvasState.mode === 'draw_node_param') {
-                const node_id = nodeIDList.length;
-                const newNode = {
-                    id: node_id,
-                    x: payload.originX - canvasState.x, 
-                    y: payload.originY - canvasState.y,
-                    parents: [],
-                    children: [],
-                    selected: false,
-                    embodied: false,
-                    visible: true,
-                    hovered: false,
-                    type: 'param',
-                    distribution: 'Gaussian',
-                    params: {mu: 0, tau: 1}
-                }
-                nodes[node_id] = newNode;
-            }
+            return state;
         }
+        case 'CANVAS_ON_MOUSE_LEAVE': {
             return state;
-        case 'CANVAS_ON_MOUSE_LEAVE':
-            return state;
+        }
         case 'CANVAS_ON_PRESS_DELETE_KEY':
             if (canvasState.mode === 'select') {
                 const edgeDeleteList = new Set(selectedComponents.edge);

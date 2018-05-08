@@ -17,13 +17,13 @@ export default function edgeReducer(state=initialState, action) {
         }
         case 'EDGE_ON_MOUSE_ENTER': {
             if (edges[meta.id].embodied) {
-                canvasState.hovering += 1;
+                canvasState.hoveringEdge += 1;
                 edges[meta.id].hovered = true;
             }
         }
         case 'EDGE_ON_MOUSE_LEAVE': {
             if (edges[meta.id].embodied) {
-                canvasState.hovering -= 1;
+                canvasState.hoveringEdge -= 1;
                 edges[meta.id].hovered = false;
             }
         }

@@ -15,40 +15,9 @@ export const CanvasReducers = reduceReducers(
 );
 
 export const canvasInitialState = {
-    nodes: {
-        id: 0,
-        x: 0,
-        y: 0,
-        parents: [],
-        children: [],
-        selected: false,
-        embodied: false,
-        visible: false,
-        hovered: false,
-        type: param,
-        distribution: 'Gaussian',
-        params: {}
-    },
-    edges: {
-        id: 0,
-        source: 0,
-        destination: 1,
-        selected: false,
-        embodied: false,
-        hovered: false
-    },
-    plates: {
-        id: 0,
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-        selected: false,
-        embodied: false,
-        hovered: false,
-        symbol: 'N',
-        value: 10
-    },
+    nodes: {},
+    edges: {},
+    plates: {},
     nodeIDList: [],
     edgeIDList: [],
     plateIDList: [],
@@ -59,7 +28,9 @@ export const canvasInitialState = {
     },
     canvasState: {
         mode: 'select',
-        hovering: 0,
+        hoveringNode: 0,
+        hoveringEdge: 0,
+        hoveringPlate: 0,
         originX: 0,
         originY: 0,
         x: 0,

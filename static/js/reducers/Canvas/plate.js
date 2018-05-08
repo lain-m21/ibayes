@@ -34,13 +34,13 @@ export default function plateReducer(state=initialState, action) {
         }
         case 'PLATE_BORDER_ON_MOUSE_ENTER': {
             if (plates[meta.id].embodied) {
-                canvasState.hovering += 1;
+                canvasState.hoveringPlate += 1;
                 plates[meta.id].hovered = true;
             }
         }
         case 'PLATE_BORDER_ON_MOUSE_LEAVE': {
             if (edges[meta.id].embodied) {
-                canvasState.hovering -= 1;
+                canvasState.hoveringPlate -= 1;
                 plates[meta.id].hovered = false;
             }
         }

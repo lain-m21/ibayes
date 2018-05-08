@@ -2,12 +2,6 @@ export default function nodeReducer(state, action) {
     const { type, payload, meta } = action;
     let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
     switch (type) {
-        case 'NODE_ON_SINGLE_CLICK': {
-            if (canvasState.mode === 'draw_node_param') {
-                nodes[meta.id].embodied = true;
-                nodeIDList.push(meta.id);
-            }
-        }
         case 'NODE_ON_DOUBLE_CLICK': {
             return state;
         }
@@ -64,13 +58,13 @@ export default function nodeReducer(state, action) {
         }
         case 'NODE_ON_MOUSE_ENTER': {
             if (nodes[meta.id].embodied) {
-                canvasState.hovering += 1;
+                canvasState.hoveringNode += 1;
                 nodes[meta.id].hovered = true;
             }
         }
         case 'NODE_ON_MOUSE_LEAVE': {
             if (nodes[meta.id].embodied) {
-                const idx = canvasState.hovering -= 1;
+                const idx = canvasState.hoveringNode -= 1;
                 nodes[meta.id].hovered = false;
             }
         }
