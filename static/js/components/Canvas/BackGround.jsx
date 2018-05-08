@@ -8,9 +8,22 @@ export default class BackGround extends Component {
         return (
             <g>
                 <defs>
-                    <marker {...marker} />
-                    <pattern {...pattern} />
-                    <filter {...filter} />
+                    <marker {...marker.globalStyle}>
+                        <path {...marker.pathStyle} />
+                    </marker>
+                    <pattern {...pattern.globalStyle}>
+                        <circle {...pattern.circleStyle} />
+                    </pattern>
+                    <filter {...filter.globalStyle}>
+                        <feGaussianBlur {...filter.feGaussianBlur} />
+                        <feOffset {...filter.feOffset} />
+                        <feComponentTransfer>
+                            <feFuncA {...filter.feFuncA} />
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode {...filter.feMergeNode} />
+                        </feMerge>
+                    </filter>
                 </defs>
                 <rect {...background} />
             </g>

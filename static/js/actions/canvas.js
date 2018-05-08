@@ -1,81 +1,85 @@
-function canvasActionFactory(dispatch, componentType='CANVAS') {
+function canvasActionFactory(componentType='CANVAS', payload, meta) {
     // componentType is either of CANVAS, NODE, EDGE, PLATE, or SELECT
     // TODO: more sophisticated/complicated composited actions to be defined
-    
-    const actions = {
-        onSingleClick: (payload, meta) => dispatch(() => { 
+    switch(meta.actionType) {
+        case 'ON_SINGLE_CLICK': {
             return {
-                type: componentType + '_ON_SINGLE_CLICK', 
-                payload: payload, 
+                type: componentType + '_ON_SINGLE_CLICK',
+                payload: payload,
                 meta: meta
-            } 
-        }),
-        onDoubleClick: (payload, meta) => dispatch(() => { 
+            }
+        }
+        case 'ON_DOUBLE_CLICK': {
             return {
-                type: componentType + '_ON_DOUBLE_CLICK', 
-                payload: payload, 
+                type: componentType + '_ON_DOUBLE_CLICK',
+                payload: payload,
                 meta: meta
-            } 
-        }),
-        onShiftClick: (payload, meta) => dispatch(() => { 
+            }
+        }
+        case 'ON_SHIFT_CLICK': {
             return {
-                type: componentType + '_ON_SHIFT_CLICK', 
-                payload: payload, 
+                type: componentType + '_ON_SHIFT_CLICK',
+                payload: payload,
                 meta: meta
-            } 
-        }),
-        onContextMenu: (payload, meta) => dispatch(() => {
+            }
+        }
+        case 'ON_CONTEXT_MENU': {
             return {
                 type: componentType + '_ON_CONTEXT_MENU',
                 payload: payload,
                 meta: meta
             }
-        }),
-        onMouseDown: (payload, meta) => dispatch(() => { 
+        }
+        case 'ON_MOUSE_DOWN': {
             return {
-                type: componentType + '_ON_MOUSE_DOWN', 
-                payload: payload, 
-                meta: meta
-            } 
-        }),
-        onMouseUp: (payload, meta) => dispatch(() => {
-            return {
-                type: componentType + '_ON_MOUSE_UP', 
-                payload: payload, 
-                meta: meta
-            }
-        }),
-        onDrag: (payload, meta) => dispatch(() => { 
-            return {
-                type: componentType + '_ON_DRAG', 
-                payload: payload, 
-                meta: meta
-            }
-        }),
-        
-        onMouseEnter: (payload, meta) => dispatch(() => { 
-            return {
-                type: componentType + '_ON_MOUSE_ENTER',
+                type: componentType + '_ON_MOUSE_DOWN',
                 payload: payload,
                 meta: meta
             }
-        }),
-        onMouseLeave: (payload, meta) => dispatch(() => { 
+        }
+        case 'ON_MOUSE_UP': {
             return {
-                type: componentType + '_ON_MOUSE_LEAVE',
+                type: componentType + '_ON_MOUSE_UP',
                 payload: payload,
                 meta: meta
             }
-        }),
-        onDelete: (payload, meta) => dispatch(() => { 
+        }
+        case 'ON_DRAG': {
             return {
-                type: componentType + '_ON_PRESS_DELETE_KEY', 
-                payload: payload, 
+                type: componentType + '_ON_DRAG',
+                payload: payload,
                 meta: meta
-            } 
-        })
+            }
+        }
+        case 'ON_ENTER_CLICK': {
+            return {
+                type: componentType + '_ON_ENTER_CLICK',
+                payload: payload,
+                meta: meta
+            }
+        }
+        case 'ON_LEAVE_CLICK': {
+            return {
+                type: componentType + '_ON_LEAVE_CLICK',
+                payload: payload,
+                meta: meta
+            }
+        }
+        case 'ON_PRESS_DELETE_KEY': {
+            return {
+                type: componentType + '_ON_PRESS_DELETE_KEY',
+                payload: payload,
+                meta: meta
+            }
+        }
+        default: {
+            return {
+                type: componentType + 'DEFAULT',
+                payload: payload,
+                meta: meta
+            }
+        }
     }
-    return actions;
 }
 
 export default canvasActionFactory;

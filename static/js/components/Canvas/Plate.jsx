@@ -8,58 +8,58 @@ export default class Plate extends Component {
     handleClick = (e, part) => {
         if (part === 'border') {
             if (e.shiftKey) {
-                this.props.borderActions.onShiftClick({}, this.meta);
+                this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_SHIFT_CLICK'});
             } else {
-                this.props.borderActions.onSingleClick({}, this.meta);
+                this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_SINGLE_CLICK'});
             }
         } else {
             if (e.shiftKey) {
-                this.props.cornerActions.onShiftClick({}, this.meta);
+                this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_SHIFT_CLICK'});
             } else {
-                this.props.cornerActions.onSingleClick({}, this.meta);
+                this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_SINGLE_CLICK'});
             }
         }
     }
     handleDoubleClick = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onDoubleClick({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_DOUBLE_CLICK'});
         } else {
-            this.props.cornerActions.onDoubleClick({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_DOUBLE_CLICK'});
         }
     }
     handleContextMenu = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onContextMenu({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_CONTEXT_MENU'});
         } else {
-            this.props.cornerActions.onContextMenu({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_CONTEXT_MENU'});
         }
     }
     handleMouseDown = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onMouseDown({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_MOUSE_DOWN'});
         } else {
-            this.props.cornerActions.onMouseDown({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_MOUSE_DOWN'});
         }
     }
     handleMouseUp = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onMouseUp({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_MOUSE_UP'});
         } else {
-            this.props.cornerActions.onMouseUp({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_MOUSE_UP'});
         }
     }
     handleMouseEnter = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onMouseEnter({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_MOUSE_ENTER'});
         } else {
-            this.props.cornerActions.onMouseEnter({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_MOUSE_ENTER'});
         }
     }
     handleMouseLeave = (e, part) => {
         if (part === 'border') {
-            this.props.borderActions.onMouseLeave({}, this.meta);
+            this.props.plateBorderActions({}, {id: this.props.id, actionType: 'ON_MOUSE_LEAVE'});
         } else {
-            this.props.cornerActions.onMouseLeave({}, this.meta);
+            this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_MOUSE_LEAVE'});
         }
     }
     getCornerDOM = (point, cursor) => {

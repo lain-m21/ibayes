@@ -1,18 +1,21 @@
+import * as $ from 'jquery';
+
 function renewComponents(components, idList) {
-    let idRange = [...idList.keys()];
-    const newComponents = [...components];
+    let idRange = [ ...idList.keys() ];
+    const newComponents = [ ...components ];
     for (let newID of idRange) {
         let oldID = idList[newID];
         delete newComponents[oldID];
         newComponents[newID] = components[oldID];
     }
-    const newIDList = [...idRange];
+    const newIDList = [ ...idRange ];
     return [ newComponents, newIDList ];
 }
 
 export default function canvasReducer(state, action) {
     const { type, payload, meta } = action;
-    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
+    const newState = $.extend(true, {}, state);
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = newState;
     switch (type) {
         case 'CANVAS_ON_SINGLE_CLICK': {
             if (canvasState.mode === 'select' && (canvasState.hoveringNode === 0 || canvasState.hoveringEdge === 0 || canvasState.hoveringPlate === 0)) {
@@ -26,6 +29,7 @@ export default function canvasReducer(state, action) {
                     plates[plate_id].selected = false;
                 }
                 selectedComponents = {node: [], edge: [], plate: []};
+                return { ...state, nodes, edges, plates, selectedComponents };
             } else if (canvasState.mode === 'draw_node_param') {
                 const node_id = nodeIDList.length;
                 const newNode = {
@@ -38,13 +42,14 @@ export default function canvasReducer(state, action) {
                     embodied: true,
                     visible: true,
                     hovered: true,
-                    type: 'param',
+                    nodeType: 'param',
                     distribution: 'Gaussian',
                     params: {mu: 0, tau: 1}
                 }
                 nodes[node_id] = newNode;
                 nodeIDList.push(node_id);
                 canvasState.hoveringNode += 1;
+                return { ...state, nodes, nodeIDList, canvasState };
             }
         }
         case 'CANVAS_ON_DOUBLE_CLICK': {
@@ -76,6 +81,7 @@ export default function canvasReducer(state, action) {
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
+            return {...state}
         case 'CANVAS_ON_MOUSE_UP':
             if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hoveringNode === 0) {
                 const edge_id = edgeIDList.pop();
@@ -86,7 +92,7 @@ export default function canvasReducer(state, action) {
                 canvasState.mode = 'draw_edge_select_source';
             } else if (canvasState.mode === 'draw_plate_on_drawing' || canvasState.mode === 'select_plate_resizing') {
                 const plate_id = plateIDList.pop();
-                const newPlate = {...plates[plate_id]};
+                const newPlate = { ...plates[plate_id] };
                 if (newPlate.width !== 0 || newPlate.height !== 0) {
                     newPlate.embodied = true;
                     plates[plate_id] = newPlate;
@@ -94,6 +100,7 @@ export default function canvasReducer(state, action) {
                 }
                 canvasState.mode = canvasState.mode === 'draw_plate_on_drawing' ? 'draw_plate_start_drawing' : 'select';
             }
+            return {...state}
         case 'CANVAS_ON_DRAG':
             if (canvasState.mode === 'select') {
                 if (selectedComponents.node.length == 0 && selectedComponents.edge.length == 0 && selectedComponents.plate.length == 0) {
@@ -159,6 +166,4 @@ export default function canvasReducer(state, action) {
         default:
             return state;
     }
-    const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
-    return newState;
 }

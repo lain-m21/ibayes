@@ -23,23 +23,22 @@ const buttonConfig = {
 export default class Pane extends Component {
     handleButtonClick = (buttonType) => {
         const payload = {
-            buttonType: buttonType, 
             graph: {
                 nodes: this.props.nodes, 
                 edges: this.props.edges, 
                 plates: this.props.plates
             }
         };
-        this.props.paneActions.onButtonClick(payload, {});
+        this.props.paneActions(payload, {buttonType: buttonType});
     }
     render() {
         return (
             <div style={paneConfig}>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('Node')}>Node</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('Edge')}>Edge</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('Plate')}>Plate</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('Select')}>Select</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('Compile')}>Compile</button>
+                <button style={buttonConfig} onClick={() => this.handleButtonClick('NODE')}>Node</button>
+                <button style={buttonConfig} onClick={() => this.handleButtonClick('EDGE')}>Edge</button>
+                <button style={buttonConfig} onClick={() => this.handleButtonClick('PLATE')}>Plate</button>
+                <button style={buttonConfig} onClick={() => this.handleButtonClick('SELECT')}>Select</button>
+                <button style={buttonConfig} onClick={() => this.handleButtonClick('COMPILE')}>Compile</button>
             </div>
         );
     }

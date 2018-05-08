@@ -9,13 +9,14 @@ export const backgroundConfigs = {
     },
 
     marker: {
-        id: 'end-arrow',
-        viewBox: '0 -4 8 8',
-        arrowSize: 8,
-        refX: 4,
-        markerWidth: 8,
-        markerHeight: 8,
-        orient: 'auto',
+        globalStyle: {
+            id: 'end-arrow',
+            viewBox: '0 -4 8 8',
+            refX: 4,
+            markerWidth: 8,
+            markerHeight: 8,
+            orient: 'auto',
+        },
         pathStyle: {
             style: {fill: 'dodgerblue'},
             d: 'M0,-4L8,0L0,4'
@@ -23,10 +24,12 @@ export const backgroundConfigs = {
     },
 
     pattern: {
-        id: 'grid',
-        width: 36,
-        height: 36,
-        patternUnits: 'userSpaceOnUse',
+        globalStyle: {
+            id: 'grid',
+            width: 36,
+            height: 36,
+            patternUnits: 'userSpaceOnUse',
+        },
         circleStyle: {
             cx: 18,
             cy: 18,
@@ -36,8 +39,10 @@ export const backgroundConfigs = {
     },
 
     filter: {
-        id: 'dropshadow',
-        height: '130%',
+        globalStyle: {
+            id: 'dropshadow',
+            height: '130%',
+        },
         feGaussianBlur: {
             in: 'SourceAlpha',
             stdDeviation: 3
@@ -47,8 +52,9 @@ export const backgroundConfigs = {
             dy: 2,
             result: 'offsetblur'
         },
-        feComponentTransfer: {
-            feFuncA: {type: 'linear', slope: 0.1}
+        feFuncA: {
+            type: 'linear', 
+            slope: 0.1
         },
         feMergeNode: {
             in: 'SourceGraphic'

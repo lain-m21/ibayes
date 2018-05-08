@@ -1,6 +1,6 @@
 export default function nodeReducer(state, action) {
     const { type, payload, meta } = action;
-    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = state;
     switch (type) {
         case 'NODE_ON_DOUBLE_CLICK': {
             return state;
@@ -19,7 +19,7 @@ export default function nodeReducer(state, action) {
                 }
             } else if (canvasState.mode === 'draw_edge_select_source') {
                 const node_id = nodeIDList.length;
-                nodes[node_id] = {...nodes[meta.id], embodied: false, selected: false, visible: false, hovered: false};
+                nodes[node_id] = { ...nodes[meta.id], embodied: false, selected: false, visible: false, hovered: false };
                 const edge_id = edgeIDList.length;
                 const edge = {
                     id: edge_id,

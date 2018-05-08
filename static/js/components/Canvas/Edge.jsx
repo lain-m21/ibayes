@@ -8,34 +8,34 @@ export default class Edge extends Component {
 
     handleClick = (e) => {
         if (e.shiftKey) {
-            this.props.onShiftKeyClick({}, this.meta);
+            this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_SHIFT_CLICK'});
         } else {
-            this.props.onSingleClick({}, this.meta);
+            this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_SINGLE_CLICK'});
         }
     }
     handleDoubleClick = (e) => {
-        this.props.onDoubleClick({}, this.meta);
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_DOUBLE_CLICK'});
     }
     handleContextMenu = (e) => {
-        this.props.onContextMenu({}, this.meta);
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_CONTEXT_MENU'});
     }
     handleMouseDown = (e) => {
         if (e.shiftKey) {
             return null;
         }
-        this.props.onMouseDown({}, this.meta);
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_MOUSE_DOWN'});
     }
     handleMouseUp = (e) => {
         if (e.shiftKey) {
             return null;
         }
-        this.props.onMouseUp({}, this.meta)
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_MOUSE_UP'})
     }
     handleMouseEnter = (e) => {
-        this.props.onMouseEnter({}, this.meta);
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_MOUSE_ENTER'});
     }
     handleMouseLeave = (e) => {
-        this.props.onMouseLeave({}, this.meta);
+        this.props.edgeActions({}, {id: this.props.id, actionType: 'ON_MOUSE_LEAVE'});
     }
 
     computePath = () => {

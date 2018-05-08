@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { CanvasReducers, canvasInitialState } from './reducers';
 
-import CanvasContainer from './containers'
+import { CanvasContainer } from './containers'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -21,7 +21,7 @@ class App extends Component {
     render() {
         return (
             <Provider store={storeCanvas}>
-                {CanvasContainer}
+                <CanvasContainer />
             </Provider>
         );
     }

@@ -2,7 +2,7 @@ const initialState = {};
 
 export default function plateReducer(state=initialState, action) {
     const { type, payload, meta } = action;
-    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = {...state};
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = state;
     switch (type) {
         case 'PLATE_BORDER_ON_DOUBLE_CLICK': {
             return state;

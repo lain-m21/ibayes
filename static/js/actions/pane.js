@@ -1,44 +1,48 @@
-const paneActions = {
-    onButtonClick: (payload, meta) => dispatch(() => {
-        const buttonType = payload.buttonType;
-        if (buttonType === 'NODE'){
+function paneActions(payload, meta) {
+    switch(meta.buttonType) {
+        case 'NODE': {
             return {
                 type: 'PANE_ON_NODE_BUTTON_CLICK',
                 payload: payload,
                 meta: meta
             }
-        } else if (buttonType === 'EDGE') {
+        }
+        case 'EDGE': {
             return {
                 type: 'PANE_ON_EDGE_BUTTON_CLICK',
                 payload: payload,
                 meta: meta
             }
-        } else if (buttonType === 'PLATE') {
+        }
+        case 'PLATE': {
             return {
                 type: 'PANE_ON_PLATE_BUTTON_CLICK',
                 payload: payload,
                 meta: meta
             }
-        } else if (buttonType === 'SELECT') {
+        }
+        case 'SELECT': {
             return {
                 type: 'PANE_ON_SELECT_BUTTON_CLICK',
                 payload: payload,
                 meta: meta
             }
-        } else if (buttonType === 'COMPILE') {
+        }
+        case 'COMPILE': {
             return {
                 type: 'PANE_ON_COMPILE_BUTTON_CLICK',
                 payload: payload,
                 meta: meta
             }
-        } else {
+        }
+        default: {
             return {
-                type: 'NULL',
+                type: 'DEFAULT',
                 payload: payload,
                 meta: meta
             }
         }
-    })
-};
+    }
+}
 
 export default paneActions;
