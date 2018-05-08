@@ -10,13 +10,15 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/api/compile')
+@app.route('/api/compile', methods=['POST'])
 def compile_model():
-    with open('./data.json', 'r') as f:
-        data = json.load(f)
-    
-    # if request.method == 'POST':
-    #     return None
+    if request.method == 'POST':
+        graph = request.form['data']
+    data = {
+        'header': 'Response from Compile',
+        'nodes': len(graph['nodes'].keys()),
+        'plates': len(graph['plates'].keys())
+    }
 
     return make_response(jsonify(data))
 

@@ -7,7 +7,7 @@ function compile(graph) {
         nodes: graph.nodes,
         plates: graph.plates
     };
-    const result = axios.post('/api/compile', data)
+    const result = axios.post('/api/compile', {data: data})
                         .then(response => response.data)
                         .catch(err => {throw err;});
     return result;
