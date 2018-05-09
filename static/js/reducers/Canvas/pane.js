@@ -1,9 +1,11 @@
+import * as $ from 'jquery';
+
 export default function paneReducer(state, action) {
     const { type, payload, meta } = action;
-    let { canvasState } = state;
+    const newState = $.extend(true, {}, state);
+    let { canvasState } = newState;
     switch (type) {
         case 'PANE_ON_NODE_BUTTON_CLICK': {
-            console.log(type)
             canvasState.mode = 'draw_node_param';
             return { ...state, canvasState }
         }

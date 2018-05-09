@@ -36,10 +36,15 @@ export default class Node extends Component {
     }
 
     render() {
-        const node = nodeConfigs[this.props.nodeType]['shape']['normal'];
+        let node;
+        if (!this.props.embodied) {
+            node = nodeConfigs['invisible']['shape']['normal']
+        } else {
+            node = nodeConfigs[this.props.nodeType]['shape']['normal']
+        }
         const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (
-            <g transform={translate} className="node"
+            <g transform={translate} className="node" id={this.props.id}
                 onClick={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
                 onContextMenu={this.handleContextMenu}

@@ -1,8 +1,9 @@
-const initialState = {};
+import * as $ from 'jquery';
 
-export default function plateReducer(state=initialState, action) {
+export default function plateReducer(state, action) {
     const { type, payload, meta } = action;
-    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = state;
+    const newState = $.extend(true, {}, state);
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = newState;
     switch (type) {
         case 'PLATE_BORDER_ON_DOUBLE_CLICK': {
             return state;
@@ -20,6 +21,7 @@ export default function plateReducer(state=initialState, action) {
                     selectedComponents.plate.push(meta.id);
                 }
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         case 'PLATE_CORNER_ON_MOUSE_DOWN': {
             if (canvasState.mode === 'select') {
@@ -31,23 +33,24 @@ export default function plateReducer(state=initialState, action) {
                     canvasState.mode = 'draw_plate_on_drawings';
                 }
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         case 'PLATE_BORDER_ON_MOUSE_ENTER': {
             if (plates[meta.id].embodied) {
                 canvasState.hoveringPlate += 1;
                 plates[meta.id].hovered = true;
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         case 'PLATE_BORDER_ON_MOUSE_LEAVE': {
             if (edges[meta.id].embodied) {
                 canvasState.hoveringPlate -= 1;
                 plates[meta.id].hovered = false;
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         default: {
             return state;
         }
     }
-    const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
-    return newState;
 }

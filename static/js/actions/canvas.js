@@ -51,16 +51,16 @@ function canvasActionFactory(componentType='CANVAS', payload, meta) {
                 meta: meta
             }
         }
-        case 'ON_ENTER_CLICK': {
+        case 'ON_MOUSE_ENTER': {
             return {
-                type: componentType + '_ON_ENTER_CLICK',
+                type: componentType + '_ON_MOUSE_ENTER',
                 payload: payload,
                 meta: meta
             }
         }
-        case 'ON_LEAVE_CLICK': {
+        case 'ON_MOUSE_LEAVE': {
             return {
-                type: componentType + '_ON_LEAVE_CLICK',
+                type: componentType + '_ON_MOUSE_LEAVE',
                 payload: payload,
                 meta: meta
             }

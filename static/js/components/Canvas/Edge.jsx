@@ -43,12 +43,12 @@ export default class Edge extends Component {
         const xDiff = destination.x - source.x;
         const yDiff = destination.y - source.y;
         const theta = Math.atan2(yDiff, xDiff);
-        const sourceRadius = nodeConfigs[source.type].radius;
-        const destinationRadius = nodeConfigs[destination.type].radius;
+        const sourceRadius = nodeConfigs[source.nodeType].radius;
+        const destinationRadius = nodeConfigs[destination.nodeType].radius;
         const x1 = source.x + 1.1 * Math.cos(theta) * sourceRadius;
         const y1 = source.y + 1.1 * Math.sin(theta) * sourceRadius;
-        const x2 = destination.x + 1.1 * Math.cos(theta) * destinationRadius;
-        const y2 = destination.y + 1.1 * Math.sin(theta) * destinationRadius;
+        const x2 = destination.x - 1.1 * Math.cos(theta) * destinationRadius;
+        const y2 = destination.y - 1.1 * Math.sin(theta) * destinationRadius;
         const data = [
             [x1, y1],
             [x2, y2]
@@ -60,6 +60,9 @@ export default class Edge extends Component {
         .y( (d) => { return d[1] } );
     
     render() {
+        if (!this.props.embodied) {
+            return null;
+        }
         const data = this.computePath();
         const path = this.getPath(data);
         return (

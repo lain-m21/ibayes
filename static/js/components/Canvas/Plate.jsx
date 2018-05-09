@@ -62,10 +62,10 @@ export default class Plate extends Component {
             this.props.plateCornerActions({}, {id: this.props.id, actionType: 'ON_MOUSE_LEAVE'});
         }
     }
-    getCornerDOM = (point, cursor) => {
+    getCornerDOM = (point, cursor, key) => {
         const plateCornerStyle = plateConfigs.corner;
         return (
-            <circle cx={point[0]} cy={point[1]} {...plateCornerStyle} cursor={cursor}
+            <circle cx={point[0]} cy={point[1]} {...plateCornerStyle} cursor={cursor} key={id}
                 onClick={(e) => this.handleClick(e, 'corner')}
                 onDoubleClick={(e) => this.handleDoubleClick(e, 'corner')}
                 onContextMenu={(e) => this.handleContextMenu(e, 'corner')}
@@ -89,14 +89,15 @@ export default class Plate extends Component {
         cornerPoints += ` ${corners[2][0]},${corners[2][1]}`
         cornerPoints += ` ${corners[3][0]},${corners[3][1]}`
         
+        let plateEdgeStyle;
         if (this.props.selected) {
-            const plateEdgeStyle = plateConfigs.edge['selected'];
+            plateEdgeStyle = plateConfigs.edge['selected'];
         } else {
-            const plateEdgeStyle = plateConfigs.edge['normal']
+            plateEdgeStyle = plateConfigs.edge['normal']
         }
 
         const plate = [
-            <polygon points={cornerPoints} {...plateEdgeStyle} {...this.props.plateActions.edge}
+            <polygon points={cornerPoints} {...plateEdgeStyle} key={this.props.id}
                 onClick={(e) => this.handleClick(e, 'border')}
                 onDoubleClick={(e) => this.handleDoubleClick(e, 'border')}
                 onContextMenu={(e) => this.handleContextMenu(e, 'border')}
@@ -108,10 +109,10 @@ export default class Plate extends Component {
         ];
         
         if (this.props.embodied) {
-            plate.push(this.getCornerDOM(corners[0], 'nw-resize'));
-            plate.push(this.getCornerDOM(corners[1], 'ne-resize'));
-            plate.push(this.getCornerDOM(corners[2], 'nw-resize'));
-            plate.push(this.getCornerDOM(corners[3], 'ne-resize'));
+            plate.push(this.getCornerDOM(corners[0], 'nw-resize', 0));
+            plate.push(this.getCornerDOM(corners[1], 'ne-resize', 1));
+            plate.push(this.getCornerDOM(corners[2], 'nw-resize', 2));
+            plate.push(this.getCornerDOM(corners[3], 'ne-resize', 3));
         }
 
         return plate;

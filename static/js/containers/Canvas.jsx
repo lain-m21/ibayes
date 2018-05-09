@@ -5,11 +5,7 @@ import { Canvas, Pane } from '../components';
 import { canvasActionFactory, paneActions } from '../actions';
 
 class CanvasContainer extends Component {
-    shouldComponentUpdate() {
-        return true;
-    }
     render() {
-        console.log(this.props)
         return (
             <div className="canvas-container">
                 <Pane {...this.props}/>

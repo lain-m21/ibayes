@@ -69,24 +69,6 @@ export default class Canvas extends Component {
         }
     }
 
-    // componentWillMount = () => {
-    //     const { nodesDOM, edgesDOM, platesDOM } = this.renderGraph(this.props);
-    //     this.nodes = nodesDOM;
-    //     this.edges = edgesDOM;
-    //     this.plates = platesDOM;
-    // }
-
-    // componentWillReceiveProps = (nextProps) => {
-    //     const { nodesDOM, edgesDOM, platesDOM } = this.renderGraph(nextProps);
-    //     this.nodes = nodesDOM;
-    //     this.edges = edgesDOM;
-    //     this.plates = platesDOM;
-    // }
-
-    // shouldComponentUpdate() {
-    //     return true;
-    // }
-
     renderGraph = () => {
         const nodesDOM = [];
         const edgesDOM = [];
@@ -100,7 +82,7 @@ export default class Canvas extends Component {
         for (let key in edges) {
             let source = nodes[edges[key].source];
             let destination = nodes[edges[key].destination];
-            let edge = {source: source, destination: destination}
+            let edge = {...edges[key], source: source, destination: destination}
             edgesDOM.push(<Edge {...edge} {...this.props.canvas} edgeActions={this.props.edgeActions} key={key} />);
         }
         const plates = {...this.props.plates}
@@ -113,7 +95,6 @@ export default class Canvas extends Component {
     render() {
         const translate = `translate(${this.props.canvas.x}, ${this.props.canvas.y})`;
         const { nodesDOM, edgesDOM, platesDOM } = this.renderGraph();
-        console.log('translate', translate)
         return (
             <g transform={translate} className="canvas"
                 onClick={this.handleClick}

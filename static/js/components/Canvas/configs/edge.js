@@ -1,5 +1,5 @@
 export const edgeConfigs = {
     'stroke': 'dodgerblue',
-    'stroke-width': '2px',
-    'marker-end': 'url(#end-arrow)',
+    'strokeWidth': '2px',
+    'markerEnd': 'url(#end-arrow)',
 };

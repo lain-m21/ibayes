@@ -29,7 +29,7 @@ export default function canvasReducer(state, action) {
                     plates[plate_id].selected = false;
                 }
                 selectedComponents = {node: [], edge: [], plate: []};
-                return { ...state, nodes, edges, plates, selectedComponents };
+                return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
             } else if (canvasState.mode === 'draw_node_param') {
                 const node_id = nodeIDList.length;
                 const newNode = {
@@ -40,7 +40,6 @@ export default function canvasReducer(state, action) {
                     children: [],
                     selected: false,
                     embodied: true,
-                    visible: true,
                     hovered: true,
                     nodeType: 'param',
                     distribution: 'Gaussian',
@@ -49,7 +48,7 @@ export default function canvasReducer(state, action) {
                 nodes[node_id] = newNode;
                 nodeIDList.push(node_id);
                 canvasState.hoveringNode += 1;
-                return { ...state, nodes, nodeIDList, canvasState };
+                return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
             }
         }
         case 'CANVAS_ON_DOUBLE_CLICK': {
@@ -78,10 +77,12 @@ export default function canvasReducer(state, action) {
                 };
                 plates[plate_id] = newPlate;
                 plateIDList.push(plate_id);
+                canvasState.originX = payload.originX;
+                canvasState.originY = payload.originY;
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
-            return {...state}
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         case 'CANVAS_ON_MOUSE_UP':
             if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hoveringNode === 0) {
                 const edge_id = edgeIDList.pop();
@@ -100,7 +101,7 @@ export default function canvasReducer(state, action) {
                 }
                 canvasState.mode = canvasState.mode === 'draw_plate_on_drawing' ? 'draw_plate_start_drawing' : 'select';
             }
-            return {...state}
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         case 'CANVAS_ON_DRAG':
             if (canvasState.mode === 'select') {
                 if (selectedComponents.node.length == 0 && selectedComponents.edge.length == 0 && selectedComponents.plate.length == 0) {
@@ -119,9 +120,9 @@ export default function canvasReducer(state, action) {
                 }
             } else if (canvasState.mode === 'draw_edge_select_destination') {
                 const edge_id = edgeIDList.pop();
-                const node_id = edges[edge_id].destination; 
-                nodes[edge_id].x += payload.xDiff;
-                nodes[edge_id].y += payload.yDiff;
+                const node_id = edges[edge_id].destination;
+                nodes[node_id].x += payload.xDiff;
+                nodes[node_id].y += payload.yDiff;
                 edgeIDList.push(edge_id);
             } else if (canvasState.mode === 'draw_plate_on_drawing') {
                 const plate_id = plateIDList.pop();
@@ -131,6 +132,7 @@ export default function canvasReducer(state, action) {
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         case 'CANVAS_ON_MOUSE_ENTER': {
             return state;
         }
@@ -163,6 +165,7 @@ export default function canvasReducer(state, action) {
                 edges, edgeIDList = renewComponents(edges, edgeIDList);
                 plates, plateIDList = renewComponents(plates, plateIDList);
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         default:
             return state;
     }

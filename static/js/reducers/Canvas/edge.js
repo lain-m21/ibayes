@@ -1,10 +1,11 @@
-const initialState = {};
+import * as $ from 'jquery';
 
-export default function edgeReducer(state=initialState, action) {
+export default function edgeReducer(state, action) {
     const { type, payload, meta } = action;
-    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = state;
+    const newState = $.extend(true, {}, state);
+    let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = newState;
     switch (type) {
-        case 'CANVAS_ON_CONTEXT_MENU': {
+        case 'EDGE_ON_CONTEXT_MENU': {
             return state;
         }
         case 'EDGE_ON_MOUSE_DOWN': {
@@ -14,23 +15,24 @@ export default function edgeReducer(state=initialState, action) {
                     selectedComponents.edge.push(meta.id);
                 }
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         case 'EDGE_ON_MOUSE_ENTER': {
-            if (edges[meta.id].embodied) {
+            if (edges[meta.id].embodied && !edges[meta.id].hovered) {
                 canvasState.hoveringEdge += 1;
                 edges[meta.id].hovered = true;
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         case 'EDGE_ON_MOUSE_LEAVE': {
-            if (edges[meta.id].embodied) {
+            if (edges[meta.id].embodied && edges[meta.id].hovered) {
                 canvasState.hoveringEdge -= 1;
                 edges[meta.id].hovered = false;
             }
+            return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
         }
         default: {
             return state;
         }
     }
-    const newState = { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
-    return newState;
 }
