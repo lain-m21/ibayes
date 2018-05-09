@@ -40,7 +40,7 @@ const mapDispatchToProps = dispatch => {
         plateBorderActions: (payload, meta) => {
             return dispatch(canvasActionFactory('PLATE_BORDER', payload, meta));
         },
-        plateBorderActions: (payload, meta) => {
+        plateCornerActions: (payload, meta) => {
             return dispatch(canvasActionFactory('PLATE_CORNER', payload, meta));
         },
         paneActions: (payload, meta) => {

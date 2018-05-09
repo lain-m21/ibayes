@@ -5,7 +5,7 @@ export const backgroundConfigs = {
         y: -2048,
         width: 4096,
         height: 4096,
-        fill: '#F9F9F9'
+        fill: 'url(#grid)'
     },
 
     marker: {

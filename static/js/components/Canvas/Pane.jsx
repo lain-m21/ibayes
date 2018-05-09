@@ -6,18 +6,20 @@ const paneConfig = {
     left: '30px',
     width: '150px',
     height: '500px',
-    padding: '10px',
-    border: '2px solid black'
+    padding: '30px 5px',
+    border: '2px solid black',
+    background: '#FFFFFF'
 }
 
 const buttonConfig = {
     position: 'relative',
-    left: '24px',
+    left: '20px',
     width: '100px',
     height: '30px',
     padding: '3px',
     border: '1px solid gray',
-    margin: '5px auto'
+    margin: '5px auto',
+    cursor: "pointer"
 }
 
 export default class Pane extends Component {

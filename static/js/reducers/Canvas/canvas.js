@@ -18,7 +18,7 @@ export default function canvasReducer(state, action) {
     let { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState } = newState;
     switch (type) {
         case 'CANVAS_ON_SINGLE_CLICK': {
-            if (canvasState.mode === 'select' && (canvasState.hoveringNode === 0 || canvasState.hoveringEdge === 0 || canvasState.hoveringPlate === 0)) {
+            if (canvasState.mode === 'select' && canvasState.hoveringNode === 0 && canvasState.hoveringEdge === 0 && canvasState.hoveringPlate === 0) {
                 for (let node_id of selectedComponents.node) {
                     nodes[node_id].selected = false;
                 }
@@ -38,6 +38,7 @@ export default function canvasReducer(state, action) {
                     y: payload.originY - canvasState.y,
                     parents: [],
                     children: [],
+                    edges: [],
                     selected: false,
                     embodied: true,
                     hovered: true,
@@ -69,7 +70,7 @@ export default function canvasReducer(state, action) {
                     y: payload.originY - canvasState.y, 
                     width: 0, 
                     height: 0, 
-                    embodied: false, 
+                    embodied: true, 
                     selected: false,
                     hovered: false,
                     symbol: 'N',
@@ -79,6 +80,7 @@ export default function canvasReducer(state, action) {
                 plateIDList.push(plate_id);
                 canvasState.originX = payload.originX;
                 canvasState.originY = payload.originY;
+                canvasState.mode = 'draw_plate_on_drawing';
             }
             canvasState.originX = payload.originX;
             canvasState.originY = payload.originY;
@@ -87,6 +89,8 @@ export default function canvasReducer(state, action) {
             if (canvasState.mode === 'draw_edge_select_destination' && canvasState.hoveringNode === 0) {
                 const edge_id = edgeIDList.pop();
                 const edge = edges[edge_id];
+                const source_id = edge.source;
+                nodes[source_id].edges.pop()
                 const tmp_id = edge.destination;
                 delete edges[edge_id];
                 delete nodes[tmp_id];
@@ -124,7 +128,7 @@ export default function canvasReducer(state, action) {
                 nodes[node_id].x += payload.xDiff;
                 nodes[node_id].y += payload.yDiff;
                 edgeIDList.push(edge_id);
-            } else if (canvasState.mode === 'draw_plate_on_drawing') {
+            } else if (canvasState.mode === 'draw_plate_on_drawing' || canvasState.mode === 'select_plate_resizing') {
                 const plate_id = plateIDList.pop();
                 plates[plate_id].width += payload.xDiff;
                 plates[plate_id].height += payload.yDiff;
@@ -139,13 +143,13 @@ export default function canvasReducer(state, action) {
         case 'CANVAS_ON_MOUSE_LEAVE': {
             return state;
         }
-        case 'CANVAS_ON_PRESS_DELETE_KEY':
+        case 'CANVAS_ON_PRESS_DELETE_KEY': {
             if (canvasState.mode === 'select') {
                 const edgeDeleteList = new Set(selectedComponents.edge);
                 for (let node_id of selectedComponents.node) {
                     let idx = nodeIDList.indexOf(node_id);
                     nodeIDList.splice(idx, 1);
-                    for (let edge_id of nodes[node_id].edge) {
+                    for (let edge_id of nodes[node_id].edges) {
                         edgeDeleteList.add(edge_id);
                     }
                     delete nodes[node_id];
@@ -166,6 +170,7 @@ export default function canvasReducer(state, action) {
                 plates, plateIDList = renewComponents(plates, plateIDList);
             }
             return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
+        }
         default:
             return state;
     }

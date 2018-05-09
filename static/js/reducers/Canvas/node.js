@@ -34,6 +34,7 @@ export default function nodeReducer(state, action) {
                 };
                 edges[edge_id] = edge;
                 edgeIDList.push(edge_id);
+                nodes[meta.id].edges.push(edge_id);
                 canvasState.mode = 'draw_edge_select_destination';
             }
             return { nodes, edges, plates, nodeIDList, edgeIDList, plateIDList, selectedComponents, canvasState };
@@ -55,6 +56,7 @@ export default function nodeReducer(state, action) {
                     edgeIDList.push(edge_id);
                     nodes[edge.source].parents.push(edge.destination);
                     nodes[edge.destination].children.push(edge.source);
+                    nodes[edge.destination].edges.push(edge_id);
                     delete nodes[tmp_node_id];
                     canvasState.mode = 'draw_edge_select_source';
                 }

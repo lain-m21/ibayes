@@ -11,9 +11,9 @@ const ConstNodeShape = {
 };
 
 const ParamNodeShape = {
-    normal: <circle r="20" cursor="pointer" />,
-    selected: <circle r="20" cursor="move" />,
-    hovered: <circle r="20" cursor="pointer" />
+    normal: <circle r="20" cursor="pointer" fill="dodgerblue" />,
+    selected: <circle r="20" cursor="move" fill="blue" />,
+    hovered: <circle r="20" cursor="pointer" fill="skyblue" />
 }
 
 const DataNodeShape = {

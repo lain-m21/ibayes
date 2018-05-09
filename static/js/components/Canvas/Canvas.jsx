@@ -63,10 +63,14 @@ export default class Canvas extends Component {
     handleMouseLeave = (e) => {
         this.props.canvasActions({}, {actionType: 'ON_MOUSE_LEAVE'});
     }
-    handleKeyPress = (e) => {
+    handleKeyDown = (e) => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
             this.props.canvasActions({}, {actionType: 'ON_PRESS_DELETE_KEY'});
         }
+    }
+
+    componentDidMount = () => {
+        document.addEventListener('keydown', this.handleKeyDown);
     }
 
     renderGraph = () => {
@@ -83,11 +87,12 @@ export default class Canvas extends Component {
             let source = nodes[edges[key].source];
             let destination = nodes[edges[key].destination];
             let edge = {...edges[key], source: source, destination: destination}
-            edgesDOM.push(<Edge {...edge} {...this.props.canvas} edgeActions={this.props.edgeActions} key={key} />);
+            edgesDOM.push(<Edge {...edge} edgeActions={this.props.edgeActions} key={key} />);
         }
         const plates = {...this.props.plates}
         for (let key in plates) {
-            platesDOM.push(<Plate {...plates[key]} {...this.props.canvas} plateActions={this.props.plateActions} key={key} />);
+            platesDOM.push(<Plate {...plates[key]} plateBorderActions={this.props.plateBorderActions} 
+                            plateCornerActions={this.props.plateCornerActions} key={key} />);
         }
         return { nodesDOM, edgesDOM, platesDOM };
     }
@@ -104,10 +109,8 @@ export default class Canvas extends Component {
                 onMouseUp={this.handleMouseUp}
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
-                onKeyPress={this.handleKeyPress}
                 >
                 <BackGround />
-                <circle transform="translate(500, 500)" r="5" fill="black"/>
                 <g className="graph">
                     {nodesDOM}
                     {edgesDOM}

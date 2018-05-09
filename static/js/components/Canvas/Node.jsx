@@ -40,7 +40,13 @@ export default class Node extends Component {
         if (!this.props.embodied) {
             node = nodeConfigs['invisible']['shape']['normal']
         } else {
-            node = nodeConfigs[this.props.nodeType]['shape']['normal']
+            if (this.props.selected) {
+                node = nodeConfigs[this.props.nodeType]['shape']['selected'];
+            } else if (this.props.hovered) {
+                node = nodeConfigs[this.props.nodeType]['shape']['hovered'];
+            } else {
+                node = nodeConfigs[this.props.nodeType]['shape']['normal'];
+            }
         }
         const translate = `translate(${this.props.x}, ${this.props.y})`;
         return (

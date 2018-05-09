@@ -1,18 +1,18 @@
 export const plateConfigs = {
     edge: {
         normal: {
-            'stroke': 'lightgray',
+            'stroke': 'black',
             'strokeWidth': 1.2,
             'fill': 'rgba(0,0,0,0)'
         },
         selected: {
-            'stroke': 'lightgray',
+            'stroke': 'black',
             'strokeWidth': 1.8,
             'fill': 'rgba(0,0,0,0)'
         }
     },
     corner: {
-        r: 1.5,
+        r: 3,
         opacity: 0
     }
 }
