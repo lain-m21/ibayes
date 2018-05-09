@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { RaisedButton, MuiThemeProvider } from 'material-ui';
 
 const paneConfig = {
     position: 'absolute',
@@ -16,10 +17,10 @@ const buttonConfig = {
     left: '20px',
     width: '100px',
     height: '30px',
-    padding: '3px',
-    border: '1px solid gray',
+    // padding: '3px',
+    // border: '1px solid gray',
     margin: '5px auto',
-    cursor: "pointer"
+    // cursor: "pointer"
 }
 
 export default class Pane extends Component {
@@ -35,13 +36,15 @@ export default class Pane extends Component {
     }
     render() {
         return (
-            <div style={paneConfig}>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('NODE')}>Node</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('EDGE')}>Edge</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('PLATE')}>Plate</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('SELECT')}>Select</button>
-                <button style={buttonConfig} onClick={() => this.handleButtonClick('COMPILE')}>Compile</button>
-            </div>
+            <MuiThemeProvider>
+                <div style={paneConfig}>
+                    <RaisedButton label="Node" primary={true} style={buttonConfig} onClick={() => this.handleButtonClick('NODE')} />
+                    <RaisedButton label="Edge" primary={true} style={buttonConfig} onClick={() => this.handleButtonClick('EDGE')} />
+                    <RaisedButton label="Plate" primary={true} style={buttonConfig} onClick={() => this.handleButtonClick('PLATE')} />
+                    <RaisedButton label="Select" primary={true} style={buttonConfig} onClick={() => this.handleButtonClick('SELECT')} />
+                    <RaisedButton label="Compile" primary={true} style={buttonConfig} onClick={() => this.handleButtonClick('COMPILE')} />
+                </div>
+            </MuiThemeProvider>
         );
     }
 }

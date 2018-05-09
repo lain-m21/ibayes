@@ -65,8 +65,16 @@ export default class Edge extends Component {
         }
         const data = this.computePath();
         const path = this.getPath(data);
+        let edgeStyle;
+        if (this.props.selected) {
+            edgeStyle = edgeConfigs['selected'];
+        } else if (this.props.hovered) {
+            edgeStyle = edgeConfigs['hovered'];
+        } else {
+            edgeStyle = edgeConfigs['normal'];
+        }
         return (
-            <g className="edge" 
+            <g className="edge" cursor="pointer"
                 onClick={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
                 onContextMenu={this.handleContextMenu}
@@ -75,7 +83,7 @@ export default class Edge extends Component {
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 >
-                <path {...edgeConfigs} d={path} />
+                <path {...edgeStyle} d={path} />
             </g>
         )
     }

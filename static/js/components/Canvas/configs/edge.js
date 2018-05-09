@@ -1,5 +1,17 @@
 export const edgeConfigs = {
-    'stroke': 'dodgerblue',
-    'strokeWidth': '2px',
-    'markerEnd': 'url(#end-arrow)',
+    normal: {
+        stroke: 'dodgerblue',
+        strokeWidth: '2px',
+        markerEnd: 'url(#end-arrow)'
+    },
+    selected: {
+        stroke: 'blue',
+        strokeWidth: '2px',
+        markerEnd: 'url(#end-arrow)'
+    },
+    hovered: {
+        stroke: 'skyblue',
+        strokeWidth: '2px',
+        markerEnd: 'url(#end-arrow)'
+    }
 };

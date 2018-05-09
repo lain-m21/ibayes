@@ -11,15 +11,15 @@ export const backgroundConfigs = {
     marker: {
         globalStyle: {
             id: 'end-arrow',
-            viewBox: '0 -3 6 6',
+            viewBox: '0 -4 8 8',
             refX: 4,
-            markerWidth: 4,
-            markerHeight: 4,
+            markerWidth: 8,
+            markerHeight: 8,
             orient: 'auto',
         },
         pathStyle: {
             style: {fill: 'dodgerblue'},
-            d: 'M0,-3L6,0L0,3'
+            d: 'M0,-4L4,0L0,4'
         },
     },
 

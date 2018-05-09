@@ -70,14 +70,16 @@ export default class Plate extends Component {
     getBorderLineDOM = (start, end, key) => {
         const path = this.getPath([start, end]);
         const key_id = 'border-' + key;
-        let plateEdgeStyle;
+        let plateBorderStyle;
         if (this.props.selected) {
-            plateEdgeStyle = plateConfigs.edge['selected'];
+            plateBorderStyle = plateConfigs.border['selected'];
+        } else if (this.props.hovered) {
+            plateBorderStyle = plateConfigs.border['hovered']
         } else {
-            plateEdgeStyle = plateConfigs.edge['normal']
+            plateBorderStyle = plateConfigs.border['normal']
         }
         return (
-            <path d={path} {...plateEdgeStyle} cursor="pointer" key={key_id} 
+            <path d={path} {...plateBorderStyle} cursor="pointer" key={key_id} 
                 onClick={(e) => this.handleClick(e, 'border')}
                 onDoubleClick={(e) => this.handleDoubleClick(e, 'border')}
                 onContextMenu={(e) => this.handleContextMenu(e, 'border')}

@@ -1,14 +1,16 @@
 export const plateConfigs = {
-    edge: {
+    border: {
         normal: {
             'stroke': 'black',
             'strokeWidth': 1.2,
-            'fill': 'rgba(0,0,0,0)'
         },
         selected: {
             'stroke': 'black',
-            'strokeWidth': 1.8,
-            'fill': 'rgba(0,0,0,0)'
+            'strokeWidth': 2.5,
+        },
+        hovered: {
+            'stroke': 'gray',
+            'strokeWidth': 1.5,
         }
     },
     corner: {
