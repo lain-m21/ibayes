@@ -22,6 +22,7 @@ export default function paneReducer(state, action) {
             return { ...state, canvasState }
         }
         case 'PANE_ON_COMPILE_BUTTON_AFTER_CLICK': {
+            console.log(payload);
             return state;
         }
         default: {

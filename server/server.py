@@ -12,8 +12,7 @@ def index():
 
 @app.route('/api/compile', methods=['POST'])
 def compile_model():
-    if request.method == 'POST':
-        graph = request.form['data']
+    graph = json.loads(request.data)
     data = {
         'header': 'Response from Compile',
         'nodes': len(graph['nodes'].keys()),
